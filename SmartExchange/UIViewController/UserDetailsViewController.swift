@@ -14,24 +14,28 @@ import JGProgressHUD
 
 class UserDetailsViewController: UIViewController {
     
-    @IBOutlet weak var name: UITextField!
     @IBOutlet weak var userInfo: UILabel!
+    @IBOutlet weak var name: UITextField!
     @IBOutlet weak var emailId: UITextField!
     @IBOutlet weak var mobile: UITextField!
     
     var email = ""
     var mob = ""
     var nam = ""
+    var questionAppCodeStr = ""
     var appCodeStr = ""
     var resultJOSN = JSON()
     
     let hud = JGProgressHUD()
+
     
     @IBOutlet weak var continueBtn: UIButton!
     //@IBOutlet weak var loaderImg: UIImageView!
     @IBOutlet weak var tnc: UILabel!
     @IBOutlet weak var checkBox: BEMCheckBox!
     
+    
+    /*
     @IBAction func continueBtnClicked(_ sender: Any) {
         email = emailId.text ?? ""
         if (email.length > 0){
@@ -65,8 +69,72 @@ class UserDetailsViewController: UIViewController {
             }
         }
         
+    }*/
+    
+    
+    @IBAction func continueBtnClicked(_ sender: UIButton) {
+        if self.validation() {
+            self.view.endEditing(true)
+            self.call()
+        }
     }
     
+    func validation() -> Bool {
+        
+        if self.name.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter a valid name", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }else if self.emailId.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter a email Id ", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }else if !self.isValidEmail(self.emailId.text!.trimmingCharacters(in: .whitespacesAndNewlines)) {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter a valid email Id ", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        } else if self.mobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter a mobile number ", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }else if (self.mobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0) < 10 {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter a valid mobile number ", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }else if !checkBox.on {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Accept terms to continue", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        } else {
+            return true
+        }
+        
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{0,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
     
     func call(){
         
@@ -257,7 +325,15 @@ class UserDetailsViewController: UIViewController {
                 print(response)
                 DispatchQueue.main.async() {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "PriceVC") as! PriceViewController
-                    vc.appCodeStr = self.appCodeStr
+                    
+                    if self.questionAppCodeStr != "" {
+                        vc.appPhysicalQuestionCodeStr = self.questionAppCodeStr
+                        print("self.questionAppCodeStr", self.questionAppCodeStr)
+                    }else {
+                        vc.appCodeStr = self.appCodeStr
+                        print("self.appCodeStr", self.appCodeStr)
+                    }
+                    
                     print("Result JSON 4: \(self.resultJOSN)")
                     vc.resultJOSN = self.resultJOSN
                     //vc.myArray = myArray
@@ -329,5 +405,7 @@ class UserDetailsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
 
 }

@@ -15,13 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         //NewRelic.start(withApplicationToken: "eu01xxee4e481a844aeccafaee48fd3c22408575fc-NRMA")
         
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        
+        sleep(UInt32(1.0))
+        
         return true
     }
 

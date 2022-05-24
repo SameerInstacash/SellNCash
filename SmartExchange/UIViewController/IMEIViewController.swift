@@ -132,7 +132,9 @@ class IMEIViewController: UIViewController,UITextFieldDelegate {
     
     @IBOutlet weak var imeiEditText: UITextField!
     @IBAction func continueBtnPressed(_ sender: Any) {
-        if imeiEditText.text?.count == 15{
+        
+        if self.imeiEditText.text?.count == 15 {
+            /*
             if isIMEIValid(imeiNumber: imeiEditText.text!){
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeVC") as! ViewController
                 vc.IMEINumber = imeiEditText.text!
@@ -142,7 +144,19 @@ class IMEIViewController: UIViewController,UITextFieldDelegate {
                 DispatchQueue.main.async {
                     self.view.makeToast("invalid_imei".localized, duration: 2.0, position: .top)
                 }
+            }*/
+            
+            if (self.imeiEditText.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0) > 0 {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeVC") as! ViewController
+                vc.IMEINumber = imeiEditText.text!
+                UserDefaults.standard.set("\(imeiEditText.text!)", forKey: "imei_number")
+                self.present(vc, animated: true, completion: nil)
+            }else{
+                DispatchQueue.main.async {
+                    self.view.makeToast("invalid_imei".localized, duration: 2.0, position: .top)
+                }
             }
+            
         }else{
             DispatchQueue.main.async {
                 self.view.makeToast("imei_validation_info".localized, duration: 2.0, position: .top)

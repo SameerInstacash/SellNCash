@@ -118,11 +118,10 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage!
-        
+        return newImage ?? UIImage()
     }
     
-    
+    var appPhysicalQuestionCodeStr = ""
     var appCodeStr = ""
     var resultJOSN = JSON()
     var deviceName = ""
@@ -138,26 +137,45 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.setStatusBarColor(themeColor: GlobalUtility().AppThemeColor)
         
         DispatchQueue.main.async {
-            self.createTableUsingMyArray()
-            self.combineAllAppCodeForServerSend()
+            //self.createTableUsingMyArray()
+            //self.combineAllAppCodeForServerSend()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        self.combineAllAppCodeForServerSend()
+        
+        /*
+        let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
+        print("isTradeInOnline value is :", isTradeInOnline)
+        
+        if !isTradeInOnline {
+            
+            DispatchQueue.main.async() {
+                self.combineAllAppCodeForServerSend()
+            }
+        
+        }else {
+            print("self.appCodeStr values are :", self.appCodeStr)
+        }
+        */
+        
+        
+        //DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             
             self.loaderImage.isHidden = false
-            let yourImage: UIImage = UIImage(named: "ic_load")!
+            let yourImage: UIImage = UIImage(named: "ic_load") ?? UIImage()
             self.loaderImage.image = yourImage
             self.loaderImage.rotate360DegreesAgain()
             
             let uploadText = "upload_btn_text".localized
-    //        let scheduleText = "schedule_btn_text".localized
+            //let scheduleText = "schedule_btn_text".localized
             self.uploadIdBtn.setTitle(uploadText, for: .normal)
-    //        scheduleVisitBtn.setTitle(scheduleText, for: .normal)
+            //scheduleVisitBtn.setTitle(scheduleText, for: .normal)
             let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
             let displayWidth: CGFloat = self.view.frame.width
             let displayHeight: CGFloat = self.view.frame.height
             
             let heightForTable = (self.payableBtnInfo.frame.maxY + 20)
+            //print(barHeight, displayWidth, displayHeight, heightForTable)
             
             /*
             myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
@@ -167,7 +185,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             */
             
             
-            self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
+            self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
             
             //SwiftSpinner.show("Getting Price...")
             
@@ -182,17 +200,21 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             */
             
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             self.callAPI()
-            
         }
+            
+        //}
         
         DispatchQueue.main.async {
-            let imgDEf = URL(string: "https://instacash.blob.core.windows.net/static/img/products/default.png")
+            //let imgDEf = URL(string: "https://instacash.blob.core.windows.net/static/img/products/default.png")
             self.productName.text = UserDefaults.standard.string(forKey: "productName")
-            self.deviceName = UserDefaults.standard.string(forKey: "productName")!
-            let img = URL(string: UserDefaults.standard.string(forKey: "productImage")!)
-            print("productName: \(self.deviceName), productImage: \(img ?? imgDEf)")
-            self.downloadImage(url: img!)
+            self.deviceName = UserDefaults.standard.string(forKey: "productName") ?? ""
+            let img = URL(string: UserDefaults.standard.string(forKey: "productImage") ?? "")
+            //print("productName: \(self.deviceName), productImage: \(img ?? imgDEf)")
+            self.downloadImage(url: img ?? URL(fileURLWithPath: ""))
+            
             
             self.refValueLabel.isHidden = true
         }
@@ -202,13 +224,13 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
                 
-        self.myTableView.dataSource = self
-        self.myTableView.delegate = self
+        //self.myTableView.dataSource = self
+        //self.myTableView.delegate = self
         
         //self.view.addSubview(self.myTableView)
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        //DispatchQueue.main.asyncAfter(deadline: .now()) {
             //self.myTableViewHeightConstraint.constant = self.myTableView.contentSize.height
-        }
+        //}
     }
 
     func callAPI(){
@@ -217,13 +239,13 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
         self.hud.show(in: self.view)
         
-        self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
+        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
         var request = URLRequest(url: URL(string: "\(self.endPoint)/priceCalcNew")!)
         print("endpoint= \(endPoint)")
         request.httpMethod = "POST"
-        let store_code = UserDefaults.standard.string(forKey: "store_code")
-        let product_id = UserDefaults.standard.string(forKey: "product_id")
-        let postString = "isAppCode=1&str=\(appCodeStr)&storeCode=\(store_code!)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id!)"
+        let store_code = UserDefaults.standard.string(forKey: "store_code") ?? ""
+        let product_id = UserDefaults.standard.string(forKey: "product_id") ?? ""
+        let postString = "isAppCode=1&str=\(self.appCodeStr)&storeCode=\(store_code)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id)"
         print("postString= \(postString)")
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -256,7 +278,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 return
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           //
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                //
                 //SwiftSpinner.hide()
                 
                 DispatchQueue.main.async {
@@ -288,13 +311,13 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     let json = try JSON(data: dataThis)
                     if  let offerpriceString = json["msg"].string {
                         
-                        let jsonString = UserDefaults.standard.string(forKey: "currencyJson")!
+                        let jsonString = UserDefaults.standard.string(forKey: "currencyJson")
                         var multiplier:Float = 1.0
                         var symbol:String = "₹"
                         var curCode:String = "INR"
-                        var symbolNew = json["currency"].string
+                        let symbolNew = json["currency"].string
                         
-                        if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
+                        if let dataFromString = jsonString?.data(using: .utf8, allowLossyConversion: false) {
                             print("currency JSON")
                             let currencyJson = try JSON(data: dataFromString)
                             multiplier = Float(currencyJson["Conversion Rate"].string!)!
@@ -418,7 +441,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
         self.hud.show(in: self.view)
         
-        self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
+        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
         var request = URLRequest(url: URL(string: "\(self.endPoint)/savingResult")!)
         request.httpMethod = "POST"
         var netType = "Mobile"
@@ -438,12 +461,12 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         metaDetails["Battery State"].string = "\(Luminous.System.Battery.state)"
         metaDetails["currentCountry"].string = Luminous.System.Locale.currentCountry
                 
-        let customerId = UserDefaults.standard.string(forKey: "customer_id")
+        let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
         let resultCode = ""
-        let imei = UserDefaults.standard.string(forKey: "imei_number")
-        let product_id = UserDefaults.standard.string(forKey: "product_id")
+        let imei = UserDefaults.standard.string(forKey: "imei_number") ?? ""
+        let product_id = UserDefaults.standard.string(forKey: "product_id") ?? ""
         print("Result JSON 5: \(self.resultJOSN)")
-        let postString = "customerId=\(customerId!)&resultCode=\(resultCode)&resultJson=\(self.resultJOSN)&price=\(price)&deviceName=\(self.deviceName)&conditionString=\(self.appCodeStr)&metaDetails=\(metaDetails)&IMEINumber=\(imei!)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id!)"
+        let postString = "customerId=\(customerId)&resultCode=\(resultCode)&resultJson=\(self.resultJOSN)&price=\(price)&deviceName=\(self.deviceName)&conditionString=\(self.appCodeStr)&metaDetails=\(metaDetails)&IMEINumber=\(imei)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id)"
         print("\(postString)")
         
         request.httpBody = postString.data(using: .utf8)
@@ -570,7 +593,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             camera.didFinishCapturingImage = { (image: UIImage?, metadata: [AnyHashable : Any]?) in
                 self.dismiss(animated: true, completion: nil)
-                var newImage = self.resizeImage(image: image!, newWidth: 800)
+                let newImage = self.resizeImage(image: image ?? UIImage(), newWidth: 800)
                 
                 
                 
@@ -590,7 +613,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
                 var request = URLRequest(url: URL(string: "\(self.endPoint)/idProof")!)
                 request.httpMethod = "POST"
-                let customerId = UserDefaults.standard.string(forKey: "customer_id")
+                let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
                 let postString = "customerId=\(customerId)&orderId=\(self.orderId)&photo=\(strBase64)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
                 
                 //SwiftSpinner.show("")
@@ -652,16 +675,16 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Num: \(indexPath.row)")
-        print("Value: \(myArray[indexPath.row])")
+        print("Value: \(self.myArray[indexPath.row])")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myArray.count
+        return self.myArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath as IndexPath)
-        //cell.textLabel!.text = "\(myArray[indexPath.row])"
+        //cell.textLabel!.text = "\(self.myArray[indexPath.row])"
         //cell.textLabel?.sizeToFit()
         //cell.textLabel?.layoutIfNeeded()
         //return cell
@@ -743,102 +766,102 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let back = "\(db): \(b)"
         
-        var myArray: Array = [lcd, back]
+        var myarray: Array = [lcd, back]
         
         if(!UserDefaults.standard.bool(forKey: "rotation")){
             functional = "rotation_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if((!UserDefaults.standard.bool(forKey: "proximity"))){
             functional = "Proximity_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "volume")){
             functional = "hardware_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         /*
         if(!UserDefaults.standard.bool(forKey: "connection")){
             functional = "Wifi_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         */
  
         if(!UserDefaults.standard.bool(forKey: "earphone")){
             functional = "earphone_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
 
         if(!UserDefaults.standard.bool(forKey: "charger")){
             functional = "charger_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "camera")){
             functional = "camera_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "fingerprint")){
             functional = "fingerprint_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "WIFI")){
             functional = "wifi_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "GSM")) {
             functional = "gsm_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "Bluetooth")) {
             functional = "bluetooth_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "GPS")) {
             functional = "gps_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "mic")){
             functional = "mic_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "Speakers")) {
             functional = "speakers_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         if(!UserDefaults.standard.bool(forKey: "Vibrator")) {
             functional = "vibrator_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         
         /*
         if(!UserDefaults.standard.bool(forKey: "NFC")) {
             functional = "nfc_info".localized
-            myArray.append(functional)
+            myarray.append(functional)
         }
         */
         
-        self.myArray = myArray
+        self.myArray = myarray
         print(self.myArray)
         
-        self.myTableView.reloadData()
+        //self.myTableView.reloadData()
         
     }
     
     func combineAllAppCodeForServerSend() {
         
-        let appCodeS = UserDefaults.standard.string(forKey: "appCodes")!
+        let appCodeS = UserDefaults.standard.string(forKey: "appCodes") ?? ""
         let apps = appCodeS.split(separator: ";")
         
         var appCodestr = ""
@@ -865,6 +888,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         if (!UserDefaults.standard.bool(forKey: "rotation")){
             appCodestr = "\(appCodestr);CISS14"
+            print("Rotation kharaab hai")
         }
         
         if (!UserDefaults.standard.bool(forKey: "proximity")){
@@ -877,10 +901,16 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         if(!UserDefaults.standard.bool(forKey: "earphone")){
             appCodestr = "\(appCodestr);CISS11"
+            print("Earphone kharaab hai")
+        }else {
+            print("Earphone sahi hai")
         }
         
         if(!UserDefaults.standard.bool(forKey: "charger")){
             appCodestr = "\(appCodestr);CISS05"
+            print("Charger kharaab hai")
+        }else {
+            print("Charger sahi hai")
         }
         
         if(!UserDefaults.standard.bool(forKey: "camera")){
@@ -927,7 +957,12 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.appCodeStr = testStr + ";" + appCodeS
         
-        print(self.appCodeStr)
+        if self.appPhysicalQuestionCodeStr != "" {
+            self.appCodeStr += self.appPhysicalQuestionCodeStr
+            print("self.appPhysicalQuestionCodeStr",self.appPhysicalQuestionCodeStr)
+        }
+        
+        print("self.appCodeStr",self.appCodeStr)
     }
     
 }

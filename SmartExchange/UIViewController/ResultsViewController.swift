@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyJSON
 import BiometricAuthentication
+import Alamofire
+import JGProgressHUD
 
 class ModelCompleteDiagnosticFlow: NSObject {
     var priority = 0
@@ -28,6 +30,9 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var resultJSON = JSON()
     
     var appCodeStr = ""
+    
+    let hud = JGProgressHUD()
+    let reachability: Reachability? = Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -431,12 +436,26 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.present(vc, animated: true, completion: nil)
         */
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
-        print("Result JSON: \(self.resultJSON)")
-        vc.resultJOSN = self.resultJSON
-        vc.appCodeStr = self.appCodeStr
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
+        print("isTradeInOnline value is :", isTradeInOnline)
+        
+        if isTradeInOnline {
+            
+            DispatchQueue.main.async() {
+                self.getProductsDetailsQuestions()
+            }
+        
+        }else {
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+            print("Result JSON: \(self.resultJSON)")
+            vc.resultJOSN = self.resultJSON
+            vc.appCodeStr = self.appCodeStr
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true, completion: nil)
+            
+        }
+        
     }
     
     //MARK:- tableview Delegates methods
@@ -452,22 +471,22 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            if arrFailedAndSkipedTest.count > 0 {
-                return  arrFailedAndSkipedTest.count + 1
+            if self.arrFailedAndSkipedTest.count > 0 {
+                return  self.arrFailedAndSkipedTest.count + 1
             }
             else {
-                return arrFunctionalTest.count + 1
+                return self.arrFunctionalTest.count + 1
             }
         }
         else {
-            return arrFunctionalTest.count + 1
+            return self.arrFunctionalTest.count + 1
         }
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if arrFailedAndSkipedTest.count > 0 {
+        if self.arrFailedAndSkipedTest.count > 0 {
             if indexPath.section == 0 {
                 
                 if indexPath.row == 0 {
@@ -483,7 +502,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     
                     let cellfailed = tableView.dequeueReusableCell(withIdentifier: "testResultCell", for: indexPath) as! TestResultCell
                     cellfailed.imgReTry.image = UIImage(named: "unverified")
-                    cellfailed.lblName.text = arrFailedAndSkipedTest[indexPath.row - 1].strTestType.localized
+                    cellfailed.lblName.text = self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType.localized
                     cellfailed.imgReTry.isHidden = true
                     cellfailed.lblReTry.isHidden = false
                     cellfailed.lblReTry.text = "ReTry".localized
@@ -521,7 +540,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     
                     let cellFunction = tableView.dequeueReusableCell(withIdentifier: "testResultCell", for: indexPath) as! TestResultCell
                     cellFunction.imgReTry.image = UIImage(named: "rightGreen")
-                    cellFunction.lblName.text = arrFunctionalTest[indexPath.row - 1].strTestType.localized
+                    cellFunction.lblName.text = self.arrFunctionalTest[indexPath.row - 1].strTestType.localized
                     cellFunction.imgReTry.isHidden = false
                     cellFunction.lblReTry.isHidden = true
                     
@@ -560,7 +579,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 
                 let cellFunction = tableView.dequeueReusableCell(withIdentifier: "testResultCell", for: indexPath) as! TestResultCell
                 cellFunction.imgReTry.image = UIImage(named: "rightGreen")
-                cellFunction.lblName.text = arrFunctionalTest[indexPath.row - 1].strTestType.localized
+                cellFunction.lblName.text = self.arrFunctionalTest[indexPath.row - 1].strTestType.localized
                 cellFunction.imgReTry.isHidden = false
                 cellFunction.lblReTry.isHidden = true
                 
@@ -592,10 +611,10 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if arrFailedAndSkipedTest.count > 0 {
+        if self.arrFailedAndSkipedTest.count > 0 {
             if indexPath.section == 0 {
                 
-                if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Dead Pixels" {
+                if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Dead Pixels" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
                     vc.isComingFromTestResult = true
@@ -611,7 +630,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     */
                     
-                }else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Screen" {
+                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Screen" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "ScreenVC") as! ScreenViewController
                     vc.isComingFromTestResult = true
@@ -620,7 +639,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Rotation" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Rotation" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "RotationVC") as! AutoRotationVC
                     vc.isComingFromTestResult = true
@@ -629,7 +648,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Proximity" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Proximity" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "ProximityView") as! ProximityVC
                     vc.isComingFromTestResult = true
@@ -638,7 +657,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Hardware Buttons" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Hardware Buttons" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "VRVC") as! VolumeRockerVC
                     vc.isComingFromTestResult = true
@@ -647,7 +666,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                    
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Earphone" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Earphone" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "EarphoneVC") as! EarphoneJackVC
                     vc.isComingFromTestResult = true
@@ -656,7 +675,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                   
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Charger" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Charger" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChargerVC") as! DeviceChargerVC
                     vc.isComingFromTestResult = true
@@ -665,7 +684,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Camera" {
+                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Camera" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
                     vc.isComingFromTestResult = true
@@ -674,7 +693,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                    
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Fingerprint Scanner" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Face-Id Scanner" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Biometric Authentication" {
+                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Fingerprint Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Face-Id Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Biometric Authentication" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "FingerPrintVC") as! FingerprintViewController
                     vc.isComingFromTestResult = true
@@ -683,7 +702,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Bluetooth" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GPS" ||  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GSM" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "SMS Verification" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "NFC" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Battery" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Storage" {
+                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Bluetooth" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GPS" ||  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GSM" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "SMS Verification" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "NFC" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Battery" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Storage" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "InternalVC") as! InternalTestsVC
                     vc.isComingFromTestResult = true
@@ -692,7 +711,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                    
                 }
-                else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "WIFI" {
+                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "WIFI" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "WiFiTestVC") as! WiFiTestVC
                     vc.isComingFromTestResult = true
@@ -701,7 +720,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     self.present(vc, animated: true, completion: nil)
                     
                 }
-                else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Microphone" {
+                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Microphone" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "MicrophoneVC") as! MicrophoneVC
                     vc.isComingFromTestResult = true
@@ -709,7 +728,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                     
-                }else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Speaker" {
+                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Speaker" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "SpeakerVC") as! SpeakerVC
                     vc.isComingFromTestResult = true
@@ -717,7 +736,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                    
-                }else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Vibrator" {
+                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Vibrator" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "VibratorVC") as! VibratorVC
                     vc.isComingFromTestResult = true
@@ -725,7 +744,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                   
-                }else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Torch" {
+                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Torch" {
                     
                     //let vc  = TorchVC()
                     //vc.isComingFromTestResult = true
@@ -733,7 +752,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     //vc.modalPresentationStyle = .fullScreen
                     //self.present(vc, animated: true, completion: nil)
                 
-                }else if arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Autofocus" {
+                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Autofocus" {
                     
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
                     vc.isComingFromTestResult = true
@@ -746,6 +765,172 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
         }
         
+    }
+    
+    //MARK: Web Service Methods
+   
+    func getProductsDetailsQuestions() {
+        
+        var productId = ""
+        var customerId = ""
+        
+        if let pId = UserDefaults.standard.string(forKey: "product_id") {
+            productId = pId
+        }
+        
+        if let cId = UserDefaults.standard.string(forKey: "customer_id") {
+            customerId = cId
+        }
+        
+        self.hud.textLabel.text = ""
+        self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
+        self.hud.show(in: self.view)
+      
+        var request = URLRequest(url: URL(string: "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public/getProductDetail")!)
+        request.httpMethod = "POST"
+
+        let postString = "userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(productId)&customerId=\(customerId)&device=\(UIDevice.current.moName)"
+
+        print("url is :",request, "\nParam is :",postString)
+        
+        request.httpBody = postString.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            DispatchQueue.main.async() {
+                self.hud.dismiss()
+            }
+            
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 2.0, position: .bottom)
+                }
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response?.description ?? "")")
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(response?.description, duration: 2.0, position: .bottom)
+                }
+                
+            } else{
+                
+                do {
+                    let json = try JSON(data: data)
+                    if json["status"] == "Success" {
+                        print("Question data is:","\(json)")
+                        
+                        AppHardwareQuestionsData = CosmeticQuestions.init(json: json)
+                        
+                        arrAppHardwareQuestions = [Questions]()
+                        arrAppQuestionsAppCodes = [String]()
+                        
+                        for enableQuestion in AppHardwareQuestionsData?.msg?.questions ?? [] {
+                            if enableQuestion.isInput == "1" {
+                                arrAppHardwareQuestions?.append(enableQuestion)
+                                //print("AppHardwareQuestions are ", arrAppHardwareQuestions ?? [])
+                                hardwareQuestionsCount += 1
+                                print("hardwareQuestionsCount is ", hardwareQuestionsCount)
+                            }
+                        }
+                        
+                        DispatchQueue.main.async() {
+                            self.CosmeticHardwareQuestions()
+                        }
+                        
+                    }else{
+                        DispatchQueue.main.async() {
+                            self.hud.dismiss()
+                            self.view.makeToast(json["msg"].stringValue, duration: 2.0, position: .bottom)
+                        }
+                    }
+                }catch{
+                    DispatchQueue.main.async() {
+                        self.hud.dismiss()
+                        self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func CosmeticHardwareQuestions() {
+        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "QuestionsVC") as! QuestionsVC
+        
+        hardwareQuestionsCount -= 1
+        AppQuestionIndex += 1
+        
+        // To Handle forward case
+        vc.TestDiagnosisForward = {
+            DispatchQueue.main.async() {
+               
+                if hardwareQuestionsCount > 0 {
+                    self.CosmeticHardwareQuestions()
+                }else {
+                    
+                    for appCode in arrAppQuestionsAppCodes ?? [] {
+                        AppResultString = AppResultString + appCode + ";"
+                        print("AppResultString is :", AppResultString)
+                    }
+                    
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+                    print("Result JSON: \(self.resultJSON)")
+                    
+                    //vc.resultJOSN = self.resultJSON
+                    //vc.appCodeStr = self.appCodeStr
+                    
+                    print("AppResultString is Before: ", AppResultString)
+                    
+                    
+                    if AppResultString.contains(";;;") {
+                        AppResultString = AppResultString.replacingOccurrences(of: ";;;", with: ";")
+                    }else if AppResultString.contains(";;") {
+                        AppResultString = AppResultString.replacingOccurrences(of: ";;", with: ";")
+                    }else {
+                        
+                    }
+                    
+                    
+                    print("AppResultString is After: ", AppResultString)
+                    
+                    vc.resultJOSN = self.resultJSON
+                    //vc.appCodeStr = AppResultString
+                    vc.questionAppCodeStr = AppResultString
+                    
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true, completion: nil)
+                    
+                    
+                }
+                
+            }
+        }
+        
+        vc.modalPresentationStyle = .overFullScreen
+        
+        if arrAppHardwareQuestions?[AppQuestionIndex].isInput == "1" {
+            vc.arrQuestionAnswer = arrAppHardwareQuestions?[AppQuestionIndex]
+            self.present(vc, animated: true, completion: nil)
+        }else {
+            self.CosmeticHardwareQuestions()
+        }
+           
+        /*
+        if AppHardwareQuestionsData?.msg?.questions?[AppQuestionIndex].isInput == "1" {
+            vc.arrQuestionAnswer = AppHardwareQuestionsData?.msg?.questions?[AppQuestionIndex]
+            self.present(vc, animated: true, completion: nil)
+        }else {
+            self.CosmeticHardwareQuestions()
+        }
+        */
+                
     }
     
     // MARK: - Navigation

@@ -14,6 +14,7 @@ import Toast_Swift
 //import Sparrow
 //import Crashlytics
 import JGProgressHUD
+import FirebaseDatabase
 
 extension String {
     var localized: String {
@@ -122,7 +123,7 @@ public extension UIDevice {
         case "AppleTV6,2":                              return "Apple TV 4K"
         case "AudioAccessory1,1":                       return "HomePod"
         case "AudioAccessory5,1":                       return "HomePod mini"
-        case "i386", "x86_64":                          return "iPad Pro (11-inch) (2nd generation)"
+        case "i386", "x86_64":                          return "iPhone 13 Pro"
         default:                                        return identifier
         
         }
@@ -180,6 +181,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
     @IBOutlet weak var previousBtn: UIButton!
     @IBOutlet weak var smartExLoadingImage: UIImageView!
     //@IBOutlet weak var retryBtn: UIButton!
+    @IBOutlet weak var tradeInOnlineBtn: UIButton!
     @IBOutlet weak var storeTokenEdit: UITextField!
     @IBOutlet weak var submitStoreBtn: UIButton!
     
@@ -270,6 +272,36 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                 self.view.makeToast("Please Check Internet connection.".localized, duration: 2.0, position: .bottom)
             }
         }
+        
+    }
+    
+    @IBAction func tradeInOnlineBtnClicked(_ sender: Any) {
+        
+        let ref = Database.database().reference(withPath: "trade_in_online")
+        
+        ref.observeSingleEvent(of: .value, with: { snapshot in
+            
+            if !snapshot.exists() {
+                return
+            }
+            
+            let tempDict = snapshot.value as? NSDictionary
+            print(tempDict ?? [:])
+            
+            DispatchQueue.main.async {
+                self.storeToken = (tempDict?.value(forKey: "token") as? String) ?? ""
+                
+                self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public"
+
+                let preferences = UserDefaults.standard
+                preferences.setValue("https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php", forKey: "tncendpoint")
+                
+                self.verifyUserSmartCode()
+                
+                UserDefaults.standard.setValue(true, forKey: "Trade_In_Online")
+            }
+            
+        })
         
     }
     
@@ -484,6 +516,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                     
                     self.verifyUserSmartCode()
                     
+                    UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
+                    
                     //break
                     return
                 }
@@ -502,6 +536,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
             preferences.setValue(0, forKey: "tradeOnline")
             
             self.verifyUserSmartCode()
+            
+            UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
             
         }else {
             DispatchQueue.main.async() {
@@ -775,6 +811,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                                 
                                 self.verifyUserSmartCode()
                                 
+                                UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
+                                
                                 //break
                                 return
                             }
@@ -793,6 +831,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         preferences.setValue(0, forKey: "tradeOnline")
                         
                         self.verifyUserSmartCode()
+                        
+                        UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
                         
                     }else {
                         DispatchQueue.main.async() {
@@ -886,6 +926,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                                 
                                 self.verifyUserSmartCode()
                                 
+                                UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
+                                
                                 //break
                                 return
                             }
@@ -905,6 +947,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         preferences.setValue(0, forKey: "tradeOnline")
                         
                         self.verifyUserSmartCode()
+                        
+                        UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
                         
                     }else {
                         DispatchQueue.main.async() {
@@ -961,7 +1005,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         let IMEI = imeiLabel.text
         let ram =  ProcessInfo.processInfo.physicalMemory
         //let ram = 3221223823
-        let postString = "IMEINumber=\(IMEI!)&device=\(device)&memory=\(modelCapacity)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=\(ram)&storeToken=\(storeToken)"
+        let postString = "IMEINumber=\(IMEI!)&device=\(device)&memory=\(modelCapacity)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=\(ram)&storeToken=\(self.storeToken)"
 //        let postString = "IMEINumber=\(IMEI!)&device=iPhone XR&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=2919613952&storeToken=6017"
 //                let postString = "IMEINumber=\(IMEI!)&device=a0001&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=1919613952&storeToken=6016"
         print("url is :",request,"\nParam is :",postString)
@@ -1015,7 +1059,12 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         if productData["id"].string ?? "" != "" {
                         
                             productIdenti = productData["id"].string ?? ""
-                            if productIdenti == self.productId {
+                            
+                            let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
+                            print("isTradeInOnline value is",isTradeInOnline)
+                            
+                            if isTradeInOnline {
+                                
                                 let productName = productData["name"]
                                 let productImage = productData["image"]
                                 preferences.set(productIdenti, forKey: "product_id")
@@ -1040,11 +1089,44 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
                                     self.present(vc, animated: true, completion: nil)
                                 }
-                            }else{
-                                DispatchQueue.main.async {
-                                    self.view.makeToast("Device Mismatch found!", duration: 2.0, position: .bottom)
+                                
+                                
+                            }else {
+                                
+                                if productIdenti == self.productId {
+                                    let productName = productData["name"]
+                                    let productImage = productData["image"]
+                                    preferences.set(productIdenti, forKey: "product_id")
+                                    preferences.set("\(productName)", forKey: "productName")
+                                    preferences.set("\(self.appCodes)", forKey: "appCodes")
+                                    preferences.set("\(productImage)", forKey: "productImage")
+                                    
+                                    preferences.set(json["customerId"].string!, forKey: "customer_id")
+                                    preferences.set(self.storeToken, forKey: "store_code")
+                                    let serverData = json["serverData"]
+                                    print("\n\n\(serverData["currencyJson"])")
+                                    let jsonEncoder = JSONEncoder()
+                                    
+                                    let currencyJSON = serverData["currencyJson"]
+                                    let jsonData = try jsonEncoder.encode(currencyJSON)
+                                    let jsonString = String(data: jsonData, encoding: .utf8)
+                                    preferences.set(jsonString, forKey: "currencyJson")
+                                    let priceData = json["priceData"]
+                                    let uptoPrice = priceData["msg"].string ?? ""
+                                    
+                                    DispatchQueue.main.async() {
+                                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
+                                        self.present(vc, animated: true, completion: nil)
+                                    }
+                                }else{
+                                    DispatchQueue.main.async {
+                                        self.view.makeToast("Device Mismatch found!", duration: 2.0, position: .bottom)
+                                    }
                                 }
+                                
                             }
+                            
+                            
                         }else{
                             DispatchQueue.main.async() {
                                 self.view.makeToast("Device not found!", duration: 2.0, position: .bottom)

@@ -40,6 +40,13 @@
 		5966EF612614812C00E91F21 /* seven.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5966EF562614812800E91F21 /* seven.wav */; };
 		5966EF622614812C00E91F21 /* zero.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5966EF572614812A00E91F21 /* zero.wav */; };
 		5966EF632614812C00E91F21 /* five.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5966EF582614812C00E91F21 /* five.wav */; };
+		59DA3424283B78FC005AC9CA /* QuestionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3423283B78FC005AC9CA /* QuestionsVC.swift */; };
+		59DA3426283B8E1A005AC9CA /* AppConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3425283B8E1A005AC9CA /* AppConstant.swift */; };
+		59DA342E283B8ED3005AC9CA /* Msg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3429283B8ED1005AC9CA /* Msg.swift */; };
+		59DA342F283B8ED3005AC9CA /* SpecificationValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA342A283B8ED1005AC9CA /* SpecificationValue.swift */; };
+		59DA3430283B8ED3005AC9CA /* ConditionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA342B283B8ED1005AC9CA /* ConditionValue.swift */; };
+		59DA3431283B8ED3005AC9CA /* CosmeticQuestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA342C283B8ED2005AC9CA /* CosmeticQuestions.swift */; };
+		59DA3432283B8ED3005AC9CA /* Questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA342D283B8ED3005AC9CA /* Questions.swift */; };
 		59DEEA1228322EE100C6B055 /* speech.gif in Resources */ = {isa = PBXBuildFile; fileRef = 59DEEA1128322EE000C6B055 /* speech.gif */; };
 		59DEEA1428322EFB00C6B055 /* dead_pixel.gif in Resources */ = {isa = PBXBuildFile; fileRef = 59DEEA1328322EFB00C6B055 /* dead_pixel.gif */; };
 		59E086D52674A709003FDA1C /* StoreUrlData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E086D32674A709003FDA1C /* StoreUrlData.swift */; };
@@ -146,6 +153,13 @@
 		5966EF562614812800E91F21 /* seven.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = seven.wav; sourceTree = "<group>"; };
 		5966EF572614812A00E91F21 /* zero.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = zero.wav; sourceTree = "<group>"; };
 		5966EF582614812C00E91F21 /* five.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = five.wav; sourceTree = "<group>"; };
+		59DA3423283B78FC005AC9CA /* QuestionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsVC.swift; sourceTree = "<group>"; };
+		59DA3425283B8E1A005AC9CA /* AppConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstant.swift; sourceTree = "<group>"; };
+		59DA3429283B8ED1005AC9CA /* Msg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msg.swift; sourceTree = "<group>"; };
+		59DA342A283B8ED1005AC9CA /* SpecificationValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecificationValue.swift; sourceTree = "<group>"; };
+		59DA342B283B8ED1005AC9CA /* ConditionValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionValue.swift; sourceTree = "<group>"; };
+		59DA342C283B8ED2005AC9CA /* CosmeticQuestions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmeticQuestions.swift; sourceTree = "<group>"; };
+		59DA342D283B8ED3005AC9CA /* Questions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Questions.swift; sourceTree = "<group>"; };
 		59DEEA1128322EE000C6B055 /* speech.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = speech.gif; path = "../../../../../App Gif & Icons/Archive-new/speech.gif"; sourceTree = "<group>"; };
 		59DEEA1328322EFB00C6B055 /* dead_pixel.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = dead_pixel.gif; path = "../../../../../App Gif & Icons/Archive-new/dead_pixel.gif"; sourceTree = "<group>"; };
 		59E086D32674A709003FDA1C /* StoreUrlData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreUrlData.swift; sourceTree = "<group>"; };
@@ -322,6 +336,7 @@
 				C3DED6BE207C83B800324995 /* Answer.swift */,
 				C3DED6C2207C8B8100324995 /* APIClient.swift */,
 				C31CFDEE2080E052003870BE /* HardwareQuestionsViewController.swift */,
+				59DA3423283B78FC005AC9CA /* QuestionsVC.swift */,
 				C363AE48208F270E00D2AC54 /* PriceViewController.swift */,
 				C312E7D522EE201300B4D291 /* UserDetailsViewController.swift */,
 				C3FAA26422F44FF100233503 /* PreviousQuotationsViewController.swift */,
@@ -368,6 +383,18 @@
 				5966EF572614812A00E91F21 /* zero.wav */,
 			);
 			path = "Mp3 Files";
+			sourceTree = "<group>";
+		};
+		59DA3433283B8EDB005AC9CA /* QuestionModel */ = {
+			isa = PBXGroup;
+			children = (
+				59DA342B283B8ED1005AC9CA /* ConditionValue.swift */,
+				59DA342C283B8ED2005AC9CA /* CosmeticQuestions.swift */,
+				59DA3429283B8ED1005AC9CA /* Msg.swift */,
+				59DA342D283B8ED3005AC9CA /* Questions.swift */,
+				59DA342A283B8ED1005AC9CA /* SpecificationValue.swift */,
+			);
+			path = QuestionModel;
 			sourceTree = "<group>";
 		};
 		59E086D22674A6CF003FDA1C /* Models */ = {
@@ -444,6 +471,8 @@
 				C363AE3A208F061200D2AC54 /* hardwareQuestions */,
 				5963FDFD25F740C500EADBB1 /* Blynk Exchange.entitlements */,
 				C3DED6BB207BB3BF00324995 /* SmartExchange.entitlements */,
+				59DA3433283B8EDB005AC9CA /* QuestionModel */,
+				59DA3425283B8E1A005AC9CA /* AppConstant.swift */,
 				59418638282E2A5600DB2723 /* GlobalUtility.swift */,
 				C39948201E54270600F01384 /* AppDelegate.swift */,
 				59418637282E2A1700DB2723 /* UIViewController */,
@@ -850,11 +879,13 @@
 				5966EF4B2614810500E91F21 /* MicrophoneVC.swift in Sources */,
 				5966EF44261480DC00E91F21 /* TestResultCell.swift in Sources */,
 				C37A34E22073EFAD004A4986 /* FingerprintViewController.swift in Sources */,
+				59DA3431283B8ED3005AC9CA /* CosmeticQuestions.swift in Sources */,
 				C363AE49208F270E00D2AC54 /* PriceViewController.swift in Sources */,
 				C363AE38208F060600D2AC54 /* SecondQViewController.swift in Sources */,
 				5966EF42261480DB00E91F21 /* TestResultTitleCell.swift in Sources */,
 				C37A34E42074075C004A4986 /* IMEIViewController.swift in Sources */,
 				C3DED6BF207C83B800324995 /* Answer.swift in Sources */,
+				59DA342E283B8ED3005AC9CA /* Msg.swift in Sources */,
 				C393FA89207625C600D43AEB /* ResultsViewController.swift in Sources */,
 				C3798EDD1E7EF8B100D95BA1 /* ProximityVC.swift in Sources */,
 				C3DED6C3207C8B8100324995 /* APIClient.swift in Sources */,
@@ -866,21 +897,26 @@
 				C39948231E54270600F01384 /* ViewController.swift in Sources */,
 				C3E76E6A1E7D5C5900228428 /* InternalTests.swift in Sources */,
 				C31CFDED207DE80C003870BE /* ScreenViewController.swift in Sources */,
+				59DA3424283B78FC005AC9CA /* QuestionsVC.swift in Sources */,
 				C39948211E54270600F01384 /* AppDelegate.swift in Sources */,
 				C363AE3E208F063F00D2AC54 /* Q4ViewController.swift in Sources */,
 				59E086D52674A709003FDA1C /* StoreUrlData.swift in Sources */,
 				C363AE41208F065400D2AC54 /* Q5ViewController.swift in Sources */,
 				C363AE47208F069E00D2AC54 /* Q8ViewController.swift in Sources */,
+				59DA3426283B8E1A005AC9CA /* AppConstant.swift in Sources */,
 				C3E76E6C1E7D5C6D00228428 /* DeadPixelVC.swift in Sources */,
+				59DA3432283B8ED3005AC9CA /* Questions.swift in Sources */,
 				C312E7D622EE201300B4D291 /* UserDetailsViewController.swift in Sources */,
 				C363AE3C208F063500D2AC54 /* Q3ViewController.swift in Sources */,
 				C31CFDF120871398003870BE /* Question.swift in Sources */,
+				59DA342F283B8ED3005AC9CA /* SpecificationValue.swift in Sources */,
 				5966EF4C2614810500E91F21 /* Recording.swift in Sources */,
 				C3F2C42F1E7EC73E0034E035 /* VolumeRockerVC.swift in Sources */,
 				59E086D62674A709003FDA1C /* Reachability.swift in Sources */,
 				59418639282E2A5600DB2723 /* GlobalUtility.swift in Sources */,
 				C363AE45208F069400D2AC54 /* Q7ViewController.swift in Sources */,
 				C343A7711E7FC2BF00C355DD /* DeviceChargerVC.swift in Sources */,
+				59DA3430283B8ED3005AC9CA /* ConditionValue.swift in Sources */,
 				C3FAA26522F44FF100233503 /* PreviousQuotationsViewController.swift in Sources */,
 				C343A76F1E7FBFA500C355DD /* EarphoneJackVC.swift in Sources */,
 				59420D29262EBFA30048B712 /* WiFiTestVC.swift in Sources */,
