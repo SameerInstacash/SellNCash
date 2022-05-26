@@ -26,9 +26,12 @@ extension UIView {
     }
 }
 
-class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
     let hud = JGProgressHUD()
+    
+    @IBOutlet weak var tradeInOnlineView: UIView!
+    @IBOutlet weak var tradeInOnlineMessageTxtView: UITextView!
     
     @IBOutlet weak var uploadIdBtn: UIButton!
 //    @IBOutlet weak var scheduleVisitBtn: UIButton!
@@ -132,6 +135,9 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var endPoint = "http://exchange.getinstacash.in/stores-asia/api/v1/public/"
     var photoAvailable = false
     
+    let XtraCoverSupportNumber = "8860396039"
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setStatusBarColor(themeColor: GlobalUtility().AppThemeColor)
@@ -143,68 +149,65 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.combineAllAppCodeForServerSend()
         
-        /*
         let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
         print("isTradeInOnline value is :", isTradeInOnline)
         
-        if !isTradeInOnline {
-            
-            DispatchQueue.main.async() {
-                self.combineAllAppCodeForServerSend()
-            }
-        
+        if isTradeInOnline {
+            self.addInfoToTextView()
+            self.tradeInOnlineView.isHidden = false
+            UIView.addShadow(baseView: self.tradeInOnlineView)
         }else {
-            print("self.appCodeStr values are :", self.appCodeStr)
+            self.tradeInOnlineMessageTxtView.text = ""
+            self.tradeInOnlineView.isHidden = true
         }
-        */
         
         
         //DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            
-            self.loaderImage.isHidden = false
-            let yourImage: UIImage = UIImage(named: "ic_load") ?? UIImage()
-            self.loaderImage.image = yourImage
-            self.loaderImage.rotate360DegreesAgain()
-            
-            let uploadText = "upload_btn_text".localized
-            //let scheduleText = "schedule_btn_text".localized
-            self.uploadIdBtn.setTitle(uploadText, for: .normal)
-            //scheduleVisitBtn.setTitle(scheduleText, for: .normal)
-            let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-            let displayWidth: CGFloat = self.view.frame.width
-            let displayHeight: CGFloat = self.view.frame.height
-            
-            let heightForTable = (self.payableBtnInfo.frame.maxY + 20)
-            //print(barHeight, displayWidth, displayHeight, heightForTable)
-            
-            /*
-            myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
-            myTableView.dataSource = self
-            myTableView.delegate = self
-            self.view.addSubview(myTableView)
-            */
-            
-            
-            self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
-            
-            //SwiftSpinner.show("Getting Price...")
-            
-            /*
-            if self.appCodeStr != "" {
-                callAPI()
-            }else {
-                DispatchQueue.main.async {
-                    self.loaderImage.isHidden = true
-                    self.view.makeToast("Device Condition Not Found.", duration: 5.0, position: .bottom)
-                }
-            }
-            */
-            
+        
+        self.loaderImage.isHidden = false
+        let yourImage: UIImage = UIImage(named: "ic_load") ?? UIImage()
+        self.loaderImage.image = yourImage
+        self.loaderImage.rotate360DegreesAgain()
+        
+        let uploadText = "upload_btn_text".localized
+        //let scheduleText = "schedule_btn_text".localized
+        self.uploadIdBtn.setTitle(uploadText, for: .normal)
+        //scheduleVisitBtn.setTitle(scheduleText, for: .normal)
+        
+        let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        let heightForTable = (self.payableBtnInfo.frame.maxY + 20)
+        print(barHeight, displayWidth, displayHeight, heightForTable)
+        
+        /*
+         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+         myTableView.dataSource = self
+         myTableView.delegate = self
+         self.view.addSubview(myTableView)
+         */
+        
+        
+        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
+        
+        //SwiftSpinner.show("Getting Price...")
+        
+        /*
+         if self.appCodeStr != "" {
+         callAPI()
+         }else {
+         DispatchQueue.main.async {
+         self.loaderImage.isHidden = true
+         self.view.makeToast("Device Condition Not Found.", duration: 5.0, position: .bottom)
+         }
+         }
+         */
+        
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             self.callAPI()
         }
-            
+        
         //}
         
         DispatchQueue.main.async {
@@ -223,14 +226,58 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-                
+        
         //self.myTableView.dataSource = self
         //self.myTableView.delegate = self
         
         //self.view.addSubview(self.myTableView)
         //DispatchQueue.main.asyncAfter(deadline: .now()) {
-            //self.myTableViewHeightConstraint.constant = self.myTableView.contentSize.height
+        //self.myTableViewHeightConstraint.constant = self.myTableView.contentSize.height
         //}
+    }
+    
+    func addInfoToTextView()  {
+        let strMessage = "Your sell back request has been registered with us and we will be calling you shortly to confirm an appointment for pickup.\nor you may call us on \(self.XtraCoverSupportNumber) for more details."
+
+        let attributedString = NSMutableAttributedString(string: strMessage, attributes: [NSAttributedStringKey.font: UIFont(name: "Poppins-Medium", size: 14) ?? UIFont()])
+        let foundRange = attributedString.mutableString.range(of: self.XtraCoverSupportNumber)
+
+        attributedString.addAttribute(NSAttributedString.Key.link, value: self.XtraCoverSupportNumber, range: foundRange)
+        
+        self.tradeInOnlineMessageTxtView.attributedText = attributedString
+        
+        self.tradeInOnlineMessageTxtView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue : UIColor.init(hexString: "#20409A")]
+        self.tradeInOnlineMessageTxtView.textColor = UIColor.init(hexString: "#101010")
+        self.tradeInOnlineMessageTxtView.textAlignment = .center
+        self.tradeInOnlineMessageTxtView.isEditable = false
+        self.tradeInOnlineMessageTxtView.dataDetectorTypes = UIDataDetectorTypes.all
+        self.tradeInOnlineMessageTxtView.delegate = self
+    }
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+
+        if URL.absoluteString == "Nutzungsbedingungen" {
+            print("nutzung")
+        }else if URL.absoluteString == "Datenschutzrichtlinien" {
+            print("daten")
+        }
+        
+        
+        
+        if let url = Foundation.URL(string: "tel://\(URL.absoluteString)"), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+        else {
+            DispatchQueue.main.async() {
+                self.view.makeToast("Your device doesn't Support this Feature.", duration: 3.0, position: .bottom)
+            }
+        }
+
+        return true
     }
 
     func callAPI(){

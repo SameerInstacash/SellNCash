@@ -12,27 +12,59 @@ import BEMCheckBox
 import iOSDropDown
 import JGProgressHUD
 
-class UserDetailsViewController: UIViewController {
+class UserDetailsViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var userInfo: UILabel!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var emailId: UITextField!
-    @IBOutlet weak var mobile: UITextField!
     
-    var email = ""
-    var mob = ""
-    var nam = ""
+    @IBOutlet weak var txtFieldName: UITextField!
+    @IBOutlet weak var txtFieldEmail: UITextField!
+    @IBOutlet weak var txtFieldMobile: UITextField!
+    @IBOutlet weak var txtFieldBankAcNumber: UITextField!
+    @IBOutlet weak var txtFieldBankName: UITextField!
+    @IBOutlet weak var txtFieldBranch: UITextField!
+    @IBOutlet weak var txtFieldIfsc: UITextField!
+    
+    @IBOutlet weak var userDetailView: UIView!
+    
+    @IBOutlet weak var continueBtn: UIButton!
+    //@IBOutlet weak var loaderImg: UIImageView!
+    @IBOutlet weak var tnc: UILabel!
+    @IBOutlet weak var checkBox: BEMCheckBox!
+    
+    //var email = ""
+    //var mob = ""
+    //var nam = ""
+    
     var questionAppCodeStr = ""
     var appCodeStr = ""
     var resultJOSN = JSON()
     
     let hud = JGProgressHUD()
 
-    
-    @IBOutlet weak var continueBtn: UIButton!
-    //@IBOutlet weak var loaderImg: UIImageView!
-    @IBOutlet weak var tnc: UILabel!
-    @IBOutlet weak var checkBox: BEMCheckBox!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setStatusBarColor(themeColor: GlobalUtility().AppThemeColor)
+        
+        self.hideKeyboardWhenTappedAround()
+        
+       print("Starting Update Users VC")
+        //loaderImg.isHidden = true
+        let info = "user_btn_continue".localized
+        self.continueBtn.setTitle(info, for: .normal)
+        //self.userInfo.text = "user_details_info".localized
+        self.userInfo.text = ""
+        
+        self.txtFieldEmail.placeholder = "email_place".localized
+        self.txtFieldName.placeholder = "name_place".localized
+        self.txtFieldMobile.placeholder = "mobile_place".localized
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UserDetailsViewController.handleTap))
+        tnc.isUserInteractionEnabled = true
+        tnc.addGestureRecognizer(tap)
+        
+        self.txtFieldIfsc.delegate = self
+        UIView.addShadow(baseView: self.userDetailView)
+    }
     
     
     /*
@@ -81,42 +113,77 @@ class UserDetailsViewController: UIViewController {
     
     func validation() -> Bool {
         
-        if self.name.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+        if self.txtFieldName.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
             
             DispatchQueue.main.async {
                 self.view.makeToast("Please Enter a valid name", duration: 2.0, position: .bottom)
             }
             
             return false
-        }else if self.emailId.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+        }else if self.txtFieldEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
             
             DispatchQueue.main.async {
-                self.view.makeToast("Please Enter a email Id ", duration: 2.0, position: .bottom)
+                self.view.makeToast("Please Enter a email Id", duration: 2.0, position: .bottom)
             }
             
             return false
-        }else if !self.isValidEmail(self.emailId.text!.trimmingCharacters(in: .whitespacesAndNewlines)) {
+        }else if !self.isValidEmail(self.txtFieldEmail.text!.trimmingCharacters(in: .whitespacesAndNewlines)) {
             
             DispatchQueue.main.async {
-                self.view.makeToast("Please Enter a valid email Id ", duration: 2.0, position: .bottom)
+                self.view.makeToast("Please Enter a valid email Id", duration: 2.0, position: .bottom)
             }
             
             return false
-        } else if self.mobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+        } else if self.txtFieldMobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
             
             DispatchQueue.main.async {
-                self.view.makeToast("Please Enter a mobile number ", duration: 2.0, position: .bottom)
+                self.view.makeToast("Please Enter a mobile number", duration: 2.0, position: .bottom)
             }
             
             return false
-        }else if (self.mobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0) < 10 {
+        }else if (self.txtFieldMobile.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0) < 10 {
             
             DispatchQueue.main.async {
-                self.view.makeToast("Please Enter a valid mobile number ", duration: 2.0, position: .bottom)
+                self.view.makeToast("Please Enter a valid mobile number", duration: 2.0, position: .bottom)
             }
             
             return false
-        }else if !checkBox.on {
+        }
+        
+        else if self.txtFieldBankAcNumber.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter bank account number", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }
+        else if self.txtFieldBankName.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter bank name", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }
+        else if self.txtFieldBranch.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter bank's branch name", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }
+        else if self.txtFieldIfsc.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
+            
+            DispatchQueue.main.async {
+                self.view.makeToast("Please Enter bank's IFSC number", duration: 2.0, position: .bottom)
+            }
+            
+            return false
+        }
+        
+        else if !checkBox.on {
             
             DispatchQueue.main.async {
                 self.view.makeToast("Please Accept terms to continue", duration: 2.0, position: .bottom)
@@ -286,7 +353,7 @@ class UserDetailsViewController: UIViewController {
         request.httpMethod = "POST"
         let customerId = UserDefaults.standard.string(forKey: "customer_id")
         let cust = customerId ?? ""
-        let postString = "customerId=\(cust)&name=\(self.nam)&mobile=\(self.mob)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&email=\(self.email)"
+        let postString = "customerId=\(cust)&name=\(self.txtFieldName.text ?? "")&mobile=\(self.txtFieldMobile.text ?? "")&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&email=\(self.txtFieldEmail.text ?? "")"
         print(postString)
         request.httpBody = postString.data(using: .utf8)
         
@@ -319,10 +386,10 @@ class UserDetailsViewController: UIViewController {
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response?.description)")
+                print("response = \(response?.description ?? "")")
                 //self.retryBtn.isHidden = false
             } else{
-                print(response)
+                print(response ?? "")
                 DispatchQueue.main.async() {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "PriceVC") as! PriceViewController
                     
@@ -346,25 +413,6 @@ class UserDetailsViewController: UIViewController {
         task.resume()
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.setStatusBarColor(themeColor: GlobalUtility().AppThemeColor)
-        
-        self.hideKeyboardWhenTappedAround()
-        
-       print("Starting Update Users VC")
-        //loaderImg.isHidden = true
-        let info = "user_btn_continue".localized
-        continueBtn.setTitle(info, for: .normal)
-        userInfo.text = "user_details_info".localized
-        emailId.placeholder = "email_place".localized
-        name.placeholder = "name_place".localized
-        mobile.placeholder = "mobile_place".localized
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UserDetailsViewController.handleTap))
-        tnc.isUserInteractionEnabled = true
-        tnc.addGestureRecognizer(tap)
-    }
     
     /*
      func handleTap(gestureRecognizer: UIGestureRecognizer) {
@@ -406,6 +454,81 @@ class UserDetailsViewController: UIViewController {
     }
     */
     
+    //MARK:- webservice Razorpay Api
     
+    func razorPayApiGet(strURL : String , parameters:NSDictionary, completionHandler: @escaping (NSDictionary?, NSError?) -> ()) {
+        
+        let web = WebServies()
+        web.getRequest(urlString: strURL, paramDict: (parameters as! Dictionary<String, AnyObject>), completionHandler: completionHandler)
+    }
+    
+    func razorpayApiCheckFromServer(txtFValue:String) {
+        
+        self.hud.textLabel.text = ""
+        self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
+        self.hud.show(in: self.view)
+        
+        
+        let strUrl = "https://ifsc.razorpay.com/\(txtFValue)"
+        print(strUrl)
+        
+        self.razorPayApiGet(strURL: strUrl, parameters: [:], completionHandler: {responseObject , error in
+            
+            DispatchQueue.main.async() {
+                self.hud.dismiss()
+            }
+            
+            print("\(String(describing: responseObject) ) , \(String(describing: error))")
+            
+            if error == nil && responseObject != nil {
+                
+                self.txtFieldBranch.text = responseObject?["BRANCH"] as? String
+                
+            }
+            else{
+                debugPrint(error as Any)
+                
+                DispatchQueue.main.async {
+                    self.view.makeToast("oops,something went wrong", duration: 2.0, position: .bottom)
+                }
+            }
+        })
+        
+        
+    }
+    
+    
+    //MARK: UITextField Delegates methods
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.txtFieldIfsc {
+            textField.resignFirstResponder()
+            return true
+        }
+        
+        return false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if textField == self.txtFieldIfsc {
+            
+            if textField.text?.isEmpty ?? false {
+                
+                DispatchQueue.main.async {
+                    self.view.makeToast("Enter valid IFSC Code", duration: 2.0, position: .bottom)
+                }
+                
+                return
+            }else {
+                self.razorpayApiCheckFromServer(txtFValue: textField.text ?? "")
+            }
+            
+        }
+        
+    }
 
 }

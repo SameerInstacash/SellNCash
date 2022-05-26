@@ -90,3 +90,50 @@ extension UIColor
     
 }
 
+@IBDesignable class cornerView: UIView {
+    
+    @IBInspectable var cornerRadius: CGFloat = 0 {
+        didSet {
+            
+            self.layer.cornerRadius = cornerRadius
+            self.layer.masksToBounds = true
+            setNeedsLayout()
+        }
+    }
+}
+
+
+extension UIView {
+    
+    //to add Shadow and Radius On desired UIView
+    static func addShadow(baseView: UIView) {
+        baseView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.50).cgColor
+        baseView.layer.shadowOffset = CGSize.init(width: 0.0, height: 1.2)
+        baseView.layer.shadowOpacity = 1.0
+        baseView.layer.shadowRadius = 1.5
+        baseView.layer.masksToBounds = false
+    }
+    
+    //to add 4 side Shadow and Radius On desired UIView
+    static func addShadowOn4side(baseView: UIView) {
+        let shadowSize : CGFloat = 3.0
+        let shadowPath = UIBezierPath(rect: CGRect(x: -shadowSize / 2,y: -shadowSize / 2,width: baseView.frame.size.width + shadowSize,height: baseView.frame.size.height + shadowSize))
+        baseView.layer.masksToBounds = false
+        baseView.layer.shadowColor = UIColor.darkGray.cgColor
+        baseView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        baseView.layer.shadowOpacity = 0.5
+        baseView.layer.shadowPath = shadowPath.cgPath
+        
+        baseView.layer.cornerRadius = 5
+    }
+    
+    static func addShadowOnViewThemeColor(baseView: UIView) {
+        baseView.layer.cornerRadius = 5.0
+        baseView.layer.shadowColor = UIColor.gray.cgColor
+        baseView.layer.shadowOffset = CGSize.init(width: 0.0, height: 0.0)
+        baseView.layer.shadowOpacity = 1.0
+        baseView.layer.shadowRadius = 5.0
+        baseView.layer.masksToBounds = false
+    }
+    
+}
