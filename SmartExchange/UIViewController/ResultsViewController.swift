@@ -447,7 +447,8 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         }else {
             
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+            //let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserDetailsVC") as! UserDetailsVC
             print("Result JSON: \(self.resultJSON)")
             vc.resultJOSN = self.resultJSON
             vc.appCodeStr = self.appCodeStr
@@ -880,7 +881,8 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     }
                     
                     
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+                    //let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserDetailsVC") as! UserDetailsVC
                     print("Result JSON: \(self.resultJSON)")
                     
                     //vc.resultJOSN = self.resultJSON

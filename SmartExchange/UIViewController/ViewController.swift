@@ -1087,6 +1087,9 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                                 
                                 DispatchQueue.main.async() {
                                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
+                                    
+                                    //let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserDetailsVC") as! UserDetailsVC
+                                    
                                     self.present(vc, animated: true, completion: nil)
                                 }
                                 

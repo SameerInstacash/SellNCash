@@ -20,7 +20,7 @@ target 'SmartExchange' do
   #pod 'Sparrow/Modules/RequestPermission', :git => 'https://github.com/IvanVorobei/Sparrow.git'
   pod 'PureLayout', '~> 2.0.5'
   #pod "SwiftSpinner"
-  pod 'iOSDropDown'
+  #pod 'iOSDropDown'
   
   #pod 'InstaCashDiagnosis'
   
@@ -44,6 +44,7 @@ target 'SmartExchange' do
   #pod 'GPUImage'
   
   pod 'JGProgressHUD'
+  pod 'DropDown'
 
   # Pods for SmartExchange
 

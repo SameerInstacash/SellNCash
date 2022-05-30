@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 import BEMCheckBox
-import iOSDropDown
+//import iOSDropDown
 import JGProgressHUD
 
 class UserDetailsViewController: UIViewController, UITextFieldDelegate {
@@ -43,6 +43,7 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Bank Account Details
         self.setStatusBarColor(themeColor: GlobalUtility().AppThemeColor)
         
         self.hideKeyboardWhenTappedAround()
@@ -150,6 +151,7 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
             return false
         }
         
+        /*
         else if self.txtFieldBankAcNumber.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? false {
             
             DispatchQueue.main.async {
@@ -182,6 +184,7 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
             
             return false
         }
+        */
         
         else if !checkBox.on {
             

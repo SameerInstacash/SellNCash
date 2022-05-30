@@ -104,7 +104,8 @@ class Q5ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+            //let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserVC") as! UserDetailsViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserDetailsVC") as! UserDetailsVC
             vc.appCodeStr = self.appCodeStr
             print("Result JSON 3: \(self.resultJSON)")
             vc.resultJOSN = self.resultJSON

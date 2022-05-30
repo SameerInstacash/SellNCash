@@ -44,6 +44,11 @@
 		59BDBE39283F396B00A7890F /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BDBE33283F396800A7890F /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		59BDBE3A283F396B00A7890F /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BDBE36283F396A00A7890F /* TPKeyboardAvoidingScrollView.m */; };
 		59BDBE3B283F396B00A7890F /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BDBE37283F396B00A7890F /* TPKeyboardAvoidingCollectionView.m */; };
+		59CF225A28447D1C00E28F15 /* UserDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF225928447D1C00E28F15 /* UserDetailsVC.swift */; };
+		59CF22622844846B00E28F15 /* SelectTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF225E2844846A00E28F15 /* SelectTextCell.swift */; };
+		59CF22632844846B00E28F15 /* HtmlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF225F2844846A00E28F15 /* HtmlCell.swift */; };
+		59CF22642844846B00E28F15 /* MobileNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF22602844846B00E28F15 /* MobileNumberCell.swift */; };
+		59CF22652844846B00E28F15 /* TextBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF22612844846B00E28F15 /* TextBoxCell.swift */; };
 		59DA3424283B78FC005AC9CA /* QuestionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3423283B78FC005AC9CA /* QuestionsVC.swift */; };
 		59DA3426283B8E1A005AC9CA /* AppConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3425283B8E1A005AC9CA /* AppConstant.swift */; };
 		59DA342E283B8ED3005AC9CA /* Msg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DA3429283B8ED1005AC9CA /* Msg.swift */; };
@@ -59,7 +64,6 @@
 		9F3B8B721FD07057605F914D /* Pods_SmartExchangeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A605FA6818744F36A4A27C8 /* Pods_SmartExchangeTests.framework */; };
 		C30A6CAA20729B160079FFEB /* proximity.gif in Resources */ = {isa = PBXBuildFile; fileRef = C30A6CA920729B150079FFEB /* proximity.gif */; };
 		C312E7D622EE201300B4D291 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C312E7D522EE201300B4D291 /* UserDetailsViewController.swift */; };
-		C319627F241B79F9003FB8BF /* iOSDropDown.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C319627E241B79F9003FB8BF /* iOSDropDown.framework */; };
 		C31CFDED207DE80C003870BE /* ScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31CFDEC207DE80C003870BE /* ScreenViewController.swift */; };
 		C31CFDEF2080E052003870BE /* HardwareQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31CFDEE2080E052003870BE /* HardwareQuestionsViewController.swift */; };
 		C31CFDF120871398003870BE /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31CFDF020871398003870BE /* Question.swift */; };
@@ -166,6 +170,11 @@
 		59BDBE35283F396A00A7890F /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
 		59BDBE36283F396A00A7890F /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
 		59BDBE37283F396B00A7890F /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
+		59CF225928447D1C00E28F15 /* UserDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsVC.swift; sourceTree = "<group>"; };
+		59CF225E2844846A00E28F15 /* SelectTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTextCell.swift; sourceTree = "<group>"; };
+		59CF225F2844846A00E28F15 /* HtmlCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlCell.swift; sourceTree = "<group>"; };
+		59CF22602844846B00E28F15 /* MobileNumberCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobileNumberCell.swift; sourceTree = "<group>"; };
+		59CF22612844846B00E28F15 /* TextBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBoxCell.swift; sourceTree = "<group>"; };
 		59DA3423283B78FC005AC9CA /* QuestionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsVC.swift; sourceTree = "<group>"; };
 		59DA3425283B8E1A005AC9CA /* AppConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstant.swift; sourceTree = "<group>"; };
 		59DA3429283B8ED1005AC9CA /* Msg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msg.swift; sourceTree = "<group>"; };
@@ -259,7 +268,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C319627F241B79F9003FB8BF /* iOSDropDown.framework in Frameworks */,
 				C331F19D22F2D98F0073D76C /* AVFoundation.framework in Frameworks */,
 				E0FFB3D78A9BD2C80C24E732 /* Pods_SmartExchange.framework in Frameworks */,
 			);
@@ -352,6 +360,7 @@
 				59DA3423283B78FC005AC9CA /* QuestionsVC.swift */,
 				C363AE48208F270E00D2AC54 /* PriceViewController.swift */,
 				C312E7D522EE201300B4D291 /* UserDetailsViewController.swift */,
+				59CF225928447D1C00E28F15 /* UserDetailsVC.swift */,
 				C3FAA26422F44FF100233503 /* PreviousQuotationsViewController.swift */,
 			);
 			path = UIViewController;
@@ -411,6 +420,26 @@
 				59BDBE33283F396800A7890F /* UIScrollView+TPKeyboardAvoidingAdditions.m */,
 			);
 			path = TPKeyboardAvoidingClasses;
+			sourceTree = "<group>";
+		};
+		59CF225D284482A400E28F15 /* GlobalClasses */ = {
+			isa = PBXGroup;
+			children = (
+				59DA3425283B8E1A005AC9CA /* AppConstant.swift */,
+				59418638282E2A5600DB2723 /* GlobalUtility.swift */,
+			);
+			path = GlobalClasses;
+			sourceTree = "<group>";
+		};
+		59CF22662844847200E28F15 /* FormTableCells */ = {
+			isa = PBXGroup;
+			children = (
+				59CF225F2844846A00E28F15 /* HtmlCell.swift */,
+				59CF22602844846B00E28F15 /* MobileNumberCell.swift */,
+				59CF225E2844846A00E28F15 /* SelectTextCell.swift */,
+				59CF22612844846B00E28F15 /* TextBoxCell.swift */,
+			);
+			path = FormTableCells;
 			sourceTree = "<group>";
 		};
 		59DA3433283B8EDB005AC9CA /* QuestionModel */ = {
@@ -490,6 +519,7 @@
 		C399481F1E54270600F01384 /* SmartExchange */ = {
 			isa = PBXGroup;
 			children = (
+				59CF22662844847200E28F15 /* FormTableCells */,
 				59BDBE3C283F398400A7890F /* TPKeyboardAvoidingClasses */,
 				59418636282E29DD00DB2723 /* Gif */,
 				59418635282E278800DB2723 /* Poppins Font */,
@@ -501,8 +531,7 @@
 				5963FDFD25F740C500EADBB1 /* Blynk Exchange.entitlements */,
 				C3DED6BB207BB3BF00324995 /* SmartExchange.entitlements */,
 				59DA3433283B8EDB005AC9CA /* QuestionModel */,
-				59DA3425283B8E1A005AC9CA /* AppConstant.swift */,
-				59418638282E2A5600DB2723 /* GlobalUtility.swift */,
+				59CF225D284482A400E28F15 /* GlobalClasses */,
 				C39948201E54270600F01384 /* AppDelegate.swift */,
 				59418637282E2A1700DB2723 /* UIViewController */,
 				C39948241E54270600F01384 /* Main.storyboard */,
@@ -736,6 +765,7 @@
 				"${BUILT_PRODUCTS_DIR}/DKCamera/DKCamera.framework",
 				"${BUILT_PRODUCTS_DIR}/DateTimePicker/DateTimePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Deviice/Deviice.framework",
+				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/EZSwipeController/EZSwipeController.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
@@ -760,7 +790,6 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/TransitionButton/TransitionButton.framework",
-				"${BUILT_PRODUCTS_DIR}/iOSDropDown/iOSDropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NewRelicAgent/NewRelic.framework/NewRelic",
@@ -774,6 +803,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKCamera.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DateTimePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Deviice.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwipeController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
@@ -798,7 +828,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TransitionButton.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NewRelic.framework",
@@ -910,6 +939,7 @@
 				5966EF44261480DC00E91F21 /* TestResultCell.swift in Sources */,
 				C37A34E22073EFAD004A4986 /* FingerprintViewController.swift in Sources */,
 				59DA3431283B8ED3005AC9CA /* CosmeticQuestions.swift in Sources */,
+				59CF22632844846B00E28F15 /* HtmlCell.swift in Sources */,
 				C363AE49208F270E00D2AC54 /* PriceViewController.swift in Sources */,
 				C363AE38208F060600D2AC54 /* SecondQViewController.swift in Sources */,
 				5966EF42261480DB00E91F21 /* TestResultTitleCell.swift in Sources */,
@@ -923,6 +953,7 @@
 				C3B255732117002A0027B5C4 /* Q4optViewController.swift in Sources */,
 				5966EF4D2614810500E91F21 /* SpeakerVC.swift in Sources */,
 				5966EF4A2614810500E91F21 /* VibratorVC.swift in Sources */,
+				59CF22642844846B00E28F15 /* MobileNumberCell.swift in Sources */,
 				C3E1C2ED1E7FA8760043DB5C /* AutoRotationVC.swift in Sources */,
 				C363AE43208F068300D2AC54 /* Q6ViewController.swift in Sources */,
 				C39948231E54270600F01384 /* ViewController.swift in Sources */,
@@ -946,6 +977,7 @@
 				5966EF4C2614810500E91F21 /* Recording.swift in Sources */,
 				C3F2C42F1E7EC73E0034E035 /* VolumeRockerVC.swift in Sources */,
 				59E086D62674A709003FDA1C /* Reachability.swift in Sources */,
+				59CF22652844846B00E28F15 /* TextBoxCell.swift in Sources */,
 				59418639282E2A5600DB2723 /* GlobalUtility.swift in Sources */,
 				C363AE45208F069400D2AC54 /* Q7ViewController.swift in Sources */,
 				C343A7711E7FC2BF00C355DD /* DeviceChargerVC.swift in Sources */,
@@ -956,6 +988,8 @@
 				C363AE36208F05F400D2AC54 /* FirstQViewController.swift in Sources */,
 				C39F31DC1E7A969C00959100 /* SmartExMainVC.swift in Sources */,
 				59BDBE3B283F396B00A7890F /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				59CF225A28447D1C00E28F15 /* UserDetailsVC.swift in Sources */,
+				59CF22622844846B00E28F15 /* SelectTextCell.swift in Sources */,
 				C31CFDEF2080E052003870BE /* HardwareQuestionsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
