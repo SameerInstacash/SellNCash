@@ -132,7 +132,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var myArray: Array<String> = []
     var isSynced = false
     var orderId = ""
-    var endPoint = "http://exchange.getinstacash.in/stores-asia/api/v1/public/"
+    //var endPoint = "http://exchange.getinstacash.in/stores-asia/api/v1/public/"
     var photoAvailable = false
     
     let XtraCoverSupportNumber = "8860396039"
@@ -188,7 +188,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
          */
         
         
-        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
+        //self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
         
         //SwiftSpinner.show("Getting Price...")
         
@@ -286,15 +286,18 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
         self.hud.show(in: self.view)
         
-        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
-        var request = URLRequest(url: URL(string: "\(self.endPoint)/priceCalcNew")!)
-        print("endpoint= \(endPoint)")
+        //self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
+        var request = URLRequest(url: URL(string: "\(AppBaseUrl)/priceCalcNew")!)
+        
         request.httpMethod = "POST"
         let store_code = UserDefaults.standard.string(forKey: "store_code") ?? ""
         let product_id = UserDefaults.standard.string(forKey: "product_id") ?? ""
         let postString = "isAppCode=1&str=\(self.appCodeStr)&storeCode=\(store_code)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id)"
         print("postString= \(postString)")
         request.httpBody = postString.data(using: .utf8)
+        
+        print("url is :",request,"\nParam is :",postString)
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             DispatchQueue.main.async() {
@@ -312,6 +315,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     do{
                         let json = try JSON(data: data ?? Data())
+                        print(" Price Error Response is:", json)
+                        
                         let msg = json["msg"].string
                         self.view.makeToast(msg, duration: 3.0, position: .bottom)
                     }catch {
@@ -335,6 +340,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 do{
                     let json = try JSON(data: data ?? Data())
+                    print(" Price Response is:", json)
+                    
                     let msg = json["msg"].string
                     self.view.makeToast(msg, duration: 3.0, position: .bottom)
                 }catch {
@@ -347,7 +354,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 print("response = \(response.debugDescription)")
             } else{
-                print("response = \(response)")
+                print("response = \(response ?? URLResponse())")
                 //SwiftSpinner.hide()
                 
                 DispatchQueue.main.async {
@@ -356,6 +363,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 do {
                     let json = try JSON(data: dataThis)
+                    print(" Price Success Response is:", json)
+                    
                     if  let offerpriceString = json["msg"].string {
                         
                         let jsonString = UserDefaults.standard.string(forKey: "currencyJson")
@@ -488,8 +497,9 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
         self.hud.show(in: self.view)
         
-        self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
-        var request = URLRequest(url: URL(string: "\(self.endPoint)/savingResult")!)
+        //self.endPoint = UserDefaults.standard.string(forKey: "endpoint") ?? ""
+        var request = URLRequest(url: URL(string: "\(AppBaseUrl)/savingResult")!)
+        
         request.httpMethod = "POST"
         var netType = "Mobile"
         if Luminous.System.Network.isConnectedViaWiFi {
@@ -516,6 +526,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let postString = "customerId=\(customerId)&resultCode=\(resultCode)&resultJson=\(self.resultJOSN)&price=\(price)&deviceName=\(self.deviceName)&conditionString=\(self.appCodeStr)&metaDetails=\(metaDetails)&IMEINumber=\(imei)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(product_id)"
         print("\(postString)")
         
+        print("url is :",request,"\nParam is :",postString)
+        
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
@@ -534,6 +546,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     do{
                         let json = try JSON(data: data ?? Data())
+                        print(" savingResult Error Response is:", json)
+                        
                         let msg = json["msg"].string
                         self.view.makeToast(msg, duration: 3.0, position: .bottom)
                     }catch {
@@ -558,8 +572,12 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 do{
                     let json = try JSON(data: data ?? Data())
+                    print(" savingResult Error Response is:", json)
+                    
                     let msg = json["msg"].string
-                    self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
                 }catch {
                     DispatchQueue.main.async() {
                         self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
@@ -569,6 +587,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             } else{
                 do{
                     let json = try JSON(data: dataThis)
+                    print(" savingResult Success Response is:", json)
+                    
                     let msg = json["msg"]
                     self.orderId = msg["orderId"].string ?? ""
                     self.isSynced = true
@@ -658,10 +678,12 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
 
-                var request = URLRequest(url: URL(string: "\(self.endPoint)/idProof")!)
+                var request = URLRequest(url: URL(string: "\(AppBaseUrl)/idProof")!)
                 request.httpMethod = "POST"
                 let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
                 let postString = "customerId=\(customerId)&orderId=\(self.orderId)&photo=\(strBase64)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
+                
+                print("url is :",request,"\nParam is :",postString)
                 
                 //SwiftSpinner.show("")
                 self.hud.textLabel.text = ""
@@ -677,12 +699,27 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     guard let dataThis = data, error == nil else {
                         
-                        DispatchQueue.main.async {
-                            //SwiftSpinner.hide()
-                            self.hud.dismiss()
-                            // check for fundamental networking error
-                            self.view.makeToast("Please Check Internet conection.", duration: 2.0, position: .bottom)
+                        do{
+                            let json = try JSON(data: data ?? Data())
+                            print(" idProof Error Response is:", json)
+                            
+                            let msg = json["msg"].string
+                            DispatchQueue.main.async() {
+                                self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                            }
+                        }catch {
+                            DispatchQueue.main.async() {
+                                self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
+                            }
                         }
+                        
+                        
+                        //DispatchQueue.main.async {
+                            //SwiftSpinner.hide()
+                            //self.hud.dismiss()
+                            // check for fundamental networking error
+                            //self.view.makeToast("Please Check Internet conection.", duration: 2.0, position: .bottom)
+                        //}
                         
                         return
                     }
@@ -690,16 +727,40 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           //
                         //SwiftSpinner.hide()
                         
-                        DispatchQueue.main.async {
-                            self.hud.dismiss()
-                            // check for http errors
+                        do{
+                            let json = try JSON(data: data ?? Data())
+                            print(" idProof Error Response is:", json)
+                            
+                            let msg = json["msg"].string
+                            DispatchQueue.main.async() {
+                                self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                            }
+                        }catch {
+                            DispatchQueue.main.async() {
+                                self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
+                            }
                         }
+                        
+                        //DispatchQueue.main.async {
+                            //self.hud.dismiss()
+                            // check for http errors
+                        //}
 
                     } else{
-                        DispatchQueue.main.async{
+                        DispatchQueue.main.async {
                             //SwiftSpinner.hide()
                             self.hud.dismiss()
+                            
+                            do {
+                                let resp = try (JSONSerialization.jsonObject(with: dataThis, options: []) as? [String:Any] ?? [:])
+                                print(" Form Response is:", resp)
+                            }catch let error as NSError {
+                                print(error)
+                                self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
+                            }
+                            
                             self.view.makeToast("Photo Id uploaded successfully!", duration: 1.0, position: .bottom)
+                            
                         }
 
                     }

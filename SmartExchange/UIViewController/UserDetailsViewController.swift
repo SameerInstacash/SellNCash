@@ -351,15 +351,17 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
 //        let endPoint = UserDefaults.standard.string(forKey: "endpoint")!
         
         //var request = URLRequest(url: URL(string: "https://exchange.buyblynk.com/api/v1/public/updateCustomer")!) // Blynk
-        var request = URLRequest(url: URL(string: "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public/updateCustomer")!) // XtraCover
+        
+        var request = URLRequest(url: URL(string: AppBaseUrl + "updateCustomer")!)
         
         request.httpMethod = "POST"
         let customerId = UserDefaults.standard.string(forKey: "customer_id")
         let cust = customerId ?? ""
         let postString = "customerId=\(cust)&name=\(self.txtFieldName.text ?? "")&mobile=\(self.txtFieldMobile.text ?? "")&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&email=\(self.txtFieldEmail.text ?? "")"
-        print(postString)
+        
         request.httpBody = postString.data(using: .utf8)
         
+        print("url is :",request,"\nParam is :",postString)
         
         self.hud.textLabel.text = ""
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
@@ -433,7 +435,10 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
     
     @objc func handleTap(gestureRecognizer: UIGestureRecognizer) {
         //let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? "https://exchange.buyblynk.com/tnc.php" // Blynk
-        let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? "https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php" // XtraCover
+        
+
+        let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? AppBaseTnc
+
         
         guard let url = URL(string: tncendpoint) else {
             return //be safe

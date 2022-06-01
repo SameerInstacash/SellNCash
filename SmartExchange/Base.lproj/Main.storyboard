@@ -610,7 +610,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connections" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5H-ak-oyx">
-                                        <rect key="frame" x="132.5" y="11.5" width="110" height="21"/>
+                                        <rect key="frame" x="139.5" y="11.5" width="96.5" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="tiV-HK-O0T"/>
                                         </constraints>
@@ -627,7 +627,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please make sure Bluetooth, GPS and Wifi are enabled on your device and press begin to start the tests." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZYc-Xt-Bha">
-                                <rect key="frame" x="43" y="286" width="290" height="95.5"/>
+                                <rect key="frame" x="43" y="289.5" width="290" height="88"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="88" id="6KO-B9-rHl"/>
                                 </constraints>
@@ -657,7 +657,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="internal.gif" translatesAutoresizingMaskIntoConstraints="NO" id="Dbf-rP-OLU">
-                                <rect key="frame" x="43" y="139" width="290" height="122"/>
+                                <rect key="frame" x="43" y="139" width="290" height="125.5"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1847,7 +1847,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen Rotation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zow-96-hgH">
-                                        <rect key="frame" x="119" y="11.5" width="137" height="21"/>
+                                        <rect key="frame" x="126.5" y="11.5" width="122.5" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="Uhf-Ve-nHs"/>
                                         </constraints>
@@ -4018,7 +4018,7 @@ voice for 4 seconds to check your microphone is working or not</string>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGp-4h-ccn">
-                                <rect key="frame" x="338" y="57" width="27" height="18.5"/>
+                                <rect key="frame" x="338" y="58.5" width="27" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="13"/>
                                 <color key="textColor" red="0.12549019610000001" green="0.25098039220000001" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -4225,7 +4225,7 @@ voice for 4 seconds to check your microphone is working or not</string>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jij-nA-QbT">
-                                <rect key="frame" x="338" y="57" width="27" height="18.5"/>
+                                <rect key="frame" x="338" y="58.5" width="27" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="13"/>
                                 <color key="textColor" red="0.12549019610000001" green="0.25098039220000001" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -4430,7 +4430,7 @@ voice for 4 seconds to check your microphone is working or not</string>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGA-9y-Pb7">
-                                <rect key="frame" x="338" y="57" width="27" height="18.5"/>
+                                <rect key="frame" x="338" y="58.5" width="27" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="13"/>
                                 <color key="textColor" red="0.12549019610000001" green="0.25098039220000001" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -4542,14 +4542,14 @@ voice for 4 seconds to check your microphone is working or not</string>
                                 </constraints>
                             </view>
                             <progressView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.89999997615814209" translatesAutoresizingMaskIntoConstraints="NO" id="a3X-YA-dfq">
-                                <rect key="frame" x="20" y="64" width="297" height="4"/>
+                                <rect key="frame" x="20" y="64" width="298.5" height="4"/>
                                 <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="progressTintColor" red="0.12549019610000001" green="0.25098039220000001" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0o-gx-233">
-                                <rect key="frame" x="337" y="57" width="28" height="18.5"/>
+                                <rect key="frame" x="338.5" y="58.5" width="26.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="13"/>
                                 <color key="textColor" red="0.12549019610000001" green="0.25098039220000001" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -4687,91 +4687,91 @@ voice for 4 seconds to check your microphone is working or not</string>
     </scenes>
     <designables>
         <designable name="0gb-tI-f4A">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="41p-EC-X3P">
-            <size key="intrinsicContentSize" width="39" height="33"/>
+            <size key="intrinsicContentSize" width="45" height="38"/>
         </designable>
         <designable name="8Gn-I9-OwG">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="8mz-qZ-DNw">
-            <size key="intrinsicContentSize" width="123" height="33"/>
+            <size key="intrinsicContentSize" width="144" height="38"/>
         </designable>
         <designable name="9MO-YD-Da8">
-            <size key="intrinsicContentSize" width="274" height="33"/>
+            <size key="intrinsicContentSize" width="314" height="38"/>
         </designable>
         <designable name="9e8-5Y-nx2">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="A4W-NK-gLG">
-            <size key="intrinsicContentSize" width="48" height="30"/>
+            <size key="intrinsicContentSize" width="54" height="33"/>
         </designable>
         <designable name="Ay7-zS-gZR">
-            <size key="intrinsicContentSize" width="49" height="33"/>
+            <size key="intrinsicContentSize" width="51" height="38"/>
         </designable>
         <designable name="Fof-RN-eLt">
             <size key="intrinsicContentSize" width="40" height="40"/>
         </designable>
         <designable name="IYe-Qf-MEn">
-            <size key="intrinsicContentSize" width="73" height="33"/>
+            <size key="intrinsicContentSize" width="85" height="38"/>
         </designable>
         <designable name="L2c-x5-mai">
-            <size key="intrinsicContentSize" width="39" height="33"/>
+            <size key="intrinsicContentSize" width="45" height="38"/>
         </designable>
         <designable name="L3O-3L-gpn">
             <size key="intrinsicContentSize" width="87" height="38"/>
         </designable>
         <designable name="M7Z-GS-2Sw">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="Nsg-T8-c5G">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="OH3-pm-ZZC">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="QPs-FR-MD8">
-            <size key="intrinsicContentSize" width="138" height="33"/>
+            <size key="intrinsicContentSize" width="148" height="38"/>
         </designable>
         <designable name="SYm-Rf-lmq">
-            <size key="intrinsicContentSize" width="107" height="33"/>
+            <size key="intrinsicContentSize" width="125" height="38"/>
         </designable>
         <designable name="Uu9-Q9-eey">
-            <size key="intrinsicContentSize" width="39" height="29"/>
+            <size key="intrinsicContentSize" width="40" height="32"/>
         </designable>
         <designable name="Xdd-jM-g6S">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="aPN-ah-eIi">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="bSD-wv-rtF">
-            <size key="intrinsicContentSize" width="154" height="33"/>
+            <size key="intrinsicContentSize" width="175" height="38"/>
         </designable>
         <designable name="cFU-eE-fgq">
             <size key="intrinsicContentSize" width="40" height="40"/>
         </designable>
         <designable name="dHW-Zh-gaU">
-            <size key="intrinsicContentSize" width="36" height="33"/>
+            <size key="intrinsicContentSize" width="39" height="38"/>
         </designable>
         <designable name="gCe-kI-CCE">
-            <size key="intrinsicContentSize" width="36" height="29"/>
+            <size key="intrinsicContentSize" width="36" height="32"/>
         </designable>
         <designable name="hIL-uf-zOE">
-            <size key="intrinsicContentSize" width="39" height="33"/>
+            <size key="intrinsicContentSize" width="45" height="38"/>
         </designable>
         <designable name="kZB-zU-mYG">
             <size key="intrinsicContentSize" width="85" height="38"/>
         </designable>
         <designable name="lJZ-w4-Gge">
-            <size key="intrinsicContentSize" width="121" height="33"/>
+            <size key="intrinsicContentSize" width="129" height="38"/>
         </designable>
         <designable name="qfx-n8-rt4">
-            <size key="intrinsicContentSize" width="58" height="33"/>
+            <size key="intrinsicContentSize" width="66" height="38"/>
         </designable>
         <designable name="snY-LS-IkO">
-            <size key="intrinsicContentSize" width="77" height="33"/>
+            <size key="intrinsicContentSize" width="87" height="38"/>
         </designable>
         <designable name="wWc-Ll-jD1">
             <size key="intrinsicContentSize" width="85" height="38"/>
@@ -4780,22 +4780,22 @@ voice for 4 seconds to check your microphone is working or not</string>
             <size key="intrinsicContentSize" width="105" height="38"/>
         </designable>
         <designable name="x9D-EE-jw0">
-            <size key="intrinsicContentSize" width="77" height="33"/>
+            <size key="intrinsicContentSize" width="87" height="38"/>
         </designable>
         <designable name="xBf-UM-6aS">
-            <size key="intrinsicContentSize" width="77" height="33"/>
+            <size key="intrinsicContentSize" width="87" height="38"/>
         </designable>
         <designable name="xau-Ya-05K">
-            <size key="intrinsicContentSize" width="39" height="33"/>
+            <size key="intrinsicContentSize" width="45" height="38"/>
         </designable>
         <designable name="xgo-ab-ntg">
-            <size key="intrinsicContentSize" width="41" height="30"/>
+            <size key="intrinsicContentSize" width="46" height="33"/>
         </designable>
         <designable name="yOx-YY-b4S">
-            <size key="intrinsicContentSize" width="73" height="33"/>
+            <size key="intrinsicContentSize" width="85" height="38"/>
         </designable>
         <designable name="zjD-8F-YiK">
-            <size key="intrinsicContentSize" width="49" height="33"/>
+            <size key="intrinsicContentSize" width="51" height="38"/>
         </designable>
     </designables>
     <color key="tintColor" red="0.14117647059999999" green="0.76862745099999996" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -56,7 +56,9 @@ class PreviousQuotationsViewController: UIViewController {
     func modAPI()
     {
         //self.endPoint = "https://exchange.buyblynk.com/api/v1/public/" // Blynk
-        self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public" // XtraCover
+       
+        
+        self.endPoint = AppBaseUrl
         
         var request = URLRequest(url: URL(string: "\(endPoint)/getSessionIdbyIMEI")!)
         request.httpMethod = "POST"
@@ -66,9 +68,10 @@ class PreviousQuotationsViewController: UIViewController {
         let imei = UserDefaults.standard.string(forKey: "imei_number")
         
         postString = "IMEINumber=\(imei!)&quotationId=\(ref)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
-       
-        
         request.httpBody = postString.data(using: .utf8)
+        
+        print("url is :",request,"\nParam is :",postString)
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             DispatchQueue.main.async() {

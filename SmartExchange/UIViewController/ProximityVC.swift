@@ -134,8 +134,6 @@ class ProximityVC: UIViewController {
                 self.present(vc, animated: true, completion: nil)
             }
             
-//            let secondViewController:CameraViewController = CameraViewController()
-//            self.present(secondViewController, animated: true, completion: nil)
 
         }
     }

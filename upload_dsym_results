@@ -2,24 +2,40 @@ uploading map to new relic
 executing upload_map_file_to_new_relic
 New Relic: map file upload attempt #1 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
+Traceback (most recent call last):
+  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/June-22/1:6:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/generateMap.py", line 96, in <module>
+    os.mkdir(workDir)
+OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-cfraqfuykexiuueorpwbtezgxvqt/Build/Intermediates.noindex/ArchiveIntermediates/SmartExchange/IntermediateBuildFilesPath/SmartExchange.build/Release-iphoneos/SmartExchange.build/tmp'
 New Relic: map file upload attempt #2 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
 New Relic: map file upload attempt #3 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
 executing upload_dsym_to_new_relic
 new relic: successfully uploaded dsym files
- '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-diyhkxooukdgenbprlqccjienwrz/Build/Intermediates.noindex/SmartExchange.build/Debug-iphoneos/SmartExchange.build/tmp'
-New Relic: map file upload attempt #2 (of 3)
-Using URL: https://mobile-symbol-upload.eu01.nr-data.net
-Traceback (most recent call last):
-  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/May-22/30:5:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/generateMap.py", line 96, in <module>
+Resources/generateMap.py", line 96, in <module>
     os.mkdir(workDir)
-OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-diyhkxooukdgenbprlqccjienwrz/Build/Intermediates.noindex/SmartExchange.build/Debug-iphoneos/SmartExchange.build/tmp'
+OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-cfraqfuykexiuueorpwbtezgxvqt/Build/Intermediates.noindex/ArchiveIntermediates/SmartExchange/IntermediateBuildFilesPath/SmartExchange.build/Release-iphoneos/SmartExchange.build/tmp'
+New Relic: map file upload attempt #3 (of 3)
+Using URL: https://mobile-symbol-upload.eu01.nr-data.net
+executing upload_dsym_to_new_relic
+new relic: successfully uploaded dsym files
+Projects/XtraCover/June-22/1:6:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/generateMap.py", line 96, in <module>
+    os.mkdir(workDir)
+OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-cfraqfuykexiuueorpwbtezgxvqt/Build/Intermediates.noindex/ArchiveIntermediates/SmartExchange/IntermediateBuildFilesPath/SmartExchange.build/Release-iphoneos/SmartExchange.build/tmp'
+executing upload_dsym_to_new_relic
+new relic: successfully uploaded dsym files
+ send
+    r.content
+  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/June-22/1:6:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/requests/models.py", line 831, in content
+    self._content = b''.join(self.iter_content(CONTENT_CHUNK_SIZE)) or b''
+  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/June-22/1:6:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/requests/models.py", line 756, in generate
+    raise ChunkedEncodingError(e)
+requests.exceptions.ChunkedEncodingError: ("Connection broken: error(54, 'Connection reset by peer')", error(54, 'Connection reset by peer'))
 New Relic: map file upload attempt #3 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
 Traceback (most recent call last):
-  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/May-22/30:5:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/generateMap.py", line 96, in <module>
+  File "/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/June-22/1:6:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/generateMap.py", line 96, in <module>
     os.mkdir(workDir)
-OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-diyhkxooukdgenbprlqccjienwrz/Build/Intermediates.noindex/SmartExchange.build/Debug-iphoneos/SmartExchange.build/tmp'
+OSError: [Errno 17] File exists: '/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-cfraqfuykexiuueorpwbtezgxvqt/Build/Intermediates.noindex/ArchiveIntermediates/SmartExchange/IntermediateBuildFilesPath/SmartExchange.build/Release-iphoneos/SmartExchange.build/tmp'
 executing upload_dsym_to_new_relic
 new relic: successfully uploaded dsym files

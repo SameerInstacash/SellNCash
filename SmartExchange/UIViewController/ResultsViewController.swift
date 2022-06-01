@@ -786,8 +786,9 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.hud.textLabel.text = ""
         self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
         self.hud.show(in: self.view)
-      
-        var request = URLRequest(url: URL(string: "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public/getProductDetail")!)
+              
+        var request = URLRequest(url: URL(string: AppBaseUrl + "getProductDetail")!)
+        
         request.httpMethod = "POST"
 
         let postString = "userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&productId=\(productId)&customerId=\(customerId)&device=\(UIDevice.current.moName)"

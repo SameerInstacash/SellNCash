@@ -29,7 +29,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     var resultJOSN = JSON()
     let hud = JGProgressHUD()
     
-    var endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public/"
+    var endPoint = AppBaseUrl // Live
 
     //var drop = UIDropDown()
     var arrDrop = [String]()
@@ -162,23 +162,21 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     
     //MARK:- UITextField Delegates methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        //if CustomUserDefault.getCurrency() == "RM" {
-            self.placeHold = textField.placeholder ?? ""
-        //}
+        self.placeHold = textField.placeholder ?? ""
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         let ndx = IndexPath(row: textField.tag, section: 0)
         if let cell = self.userDetailTableView.cellForRow(at: ndx) as? TextBoxCell {
-            /*
+            
             if cell.txtField.text?.isEmpty ?? false {
                 self.bankDict[cell.txtField.placeholder ?? ""] = ""
             }else {
                 self.bankDict[self.placeHold] = cell.txtField.text ?? ""
-            }*/
+            }
             
-            
+            /*
             if cell.txtField.placeholder == "IFSC" {
                 
                 let ndx = IndexPath(row:textField.tag, section: 0)
@@ -201,7 +199,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                 self.bankDict[cell.txtField.placeholder ?? ""] = ""
             }else {
                 self.bankDict[self.placeHold] = cell.txtField.text ?? ""
-            }
+            }*/
             
         }
         
@@ -232,11 +230,13 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         
         self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
         var request = URLRequest(url: URL(string: "\(self.endPoint)/getForm")!)
-        print("endpoint= \(endPoint)")
+        //print("endpoint= \(endPoint)")
         request.httpMethod = "POST"
         
         let postString = "userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&customerId=\(self.customerId)"
-        print("postString= \(postString)")
+        //print("postString= \(postString)")
+        
+        print("url is :",request,"\nParam is :",postString)
         
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -450,7 +450,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         
         self.endPoint = UserDefaults.standard.string(forKey: "endpoint")!
         var request = URLRequest(url: URL(string: "\(self.endPoint)/setForm")!)
-        print("endpoint= \(endPoint)")
+        //print("endpoint= \(endPoint)")
         request.httpMethod = "POST"
         
         
@@ -458,7 +458,8 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
         
         let postString = "userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&formData=\(jsonString)"
-        print("postString= \(postString)")
+        //print("postString= \(postString)")
+        print("url is :",request,"\nParam is :",postString)
         
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -647,7 +648,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                 cellTextBox.txtField.keyboardType = .emailAddress
             }else if cellTextBox.txtField.placeholder == "Bank Name" {
                 cellTextBox.txtField.keyboardType = .default
-                cellTextBox.txtField.isUserInteractionEnabled = false
+                //cellTextBox.txtField.isUserInteractionEnabled = false
             }else {
                 cellTextBox.txtField.keyboardType = .default
             }
@@ -736,7 +737,8 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     
     @objc func handleTap(gestureRecognizer: UIGestureRecognizer) {
         //let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? "https://exchange.buyblynk.com/tnc.php" // Blynk
-        let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? "https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php" // XtraCover
+        
+        let tncendpoint = UserDefaults.standard.string(forKey: "tncendpoint") ?? AppBaseTnc // XtraCover Live
         
         guard let url = URL(string: tncendpoint) else {
             return //be safe

@@ -290,11 +290,11 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
             
             DispatchQueue.main.async {
                 self.storeToken = (tempDict?.value(forKey: "token") as? String) ?? ""
-                
-                self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public"
+            
+                self.endPoint = AppBaseUrl
 
                 let preferences = UserDefaults.standard
-                preferences.setValue("https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php", forKey: "tncendpoint")
+                preferences.setValue(AppBaseTnc, forKey: "tncendpoint")
                 
                 self.verifyUserSmartCode()
                 
@@ -525,13 +525,17 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
             
             // If Store Token not add in firebase
             //self.endPoint = "https://exchange.buyblynk.com/api/v1/public" // Blynk
-            self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public" // XtraCover
+           
+            
+            self.endPoint = AppBaseUrl
             
             print("self.endPoint", self.endPoint)
             
             let preferences = UserDefaults.standard
             //preferences.setValue("https://exchange.buyblynk.com/tnc.php", forKey: "tncendpoint") // Blynk
-            preferences.setValue("https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php", forKey: "tncendpoint")  // XtraCover
+           
+            preferences.setValue(AppBaseTnc, forKey: "tncendpoint")
+            
             preferences.setValue(0, forKey: "storeType")
             preferences.setValue(0, forKey: "tradeOnline")
             
@@ -820,13 +824,18 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         
                         // If Store Token not add in firebase
                         //self.endPoint = "https://exchange.buyblynk.com/api/v1/public" // Blynk
-                        self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public" // XtraCover
                         
+                        
+                        self.endPoint = AppBaseUrl
+                                                
                         print("self.endPoint", self.endPoint)
                         
                         let preferences = UserDefaults.standard
                         //preferences.setValue("https://exchange.buyblynk.com/tnc.php", forKey: "tncendpoint") // Blynk
-                        preferences.setValue("https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php", forKey: "tncendpoint") // XtraCover
+                        
+                        
+                        preferences.setValue(AppBaseTnc, forKey: "tncendpoint") 
+                        
                         preferences.setValue(0, forKey: "storeType")
                         preferences.setValue(0, forKey: "tradeOnline")
                         
@@ -859,15 +868,17 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         var parameters = [String: Any]()
         //let strUrl = "\(self.endPoint)/getQuoteIdData"
         //let strUrl = "https://exchange.buyblynk.com/api/v1/public/getQuoteIdData" // Blynk
-        let strUrl = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public/getQuoteIdData" // XtraCover
-
+        
+        let strUrl = AppBaseUrl + "getQuoteIdData"
+        
         parameters  = [
             "userName" : "planetm",
             "apiKey" : "fd9a42ed13c8b8a27b5ead10d054caaf",
             "quoteId" : quoteID,
         ]
         
-        print(strUrl, "quote id is  \(quoteID)" , parameters)
+        
+        print("url is :", strUrl, "quote id is  \(quoteID)" , parameters)
         
         //self.smartExLoadingImage.isHidden = false
         //self.smartExLoadingImage.rotate360Degrees()
@@ -935,14 +946,19 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         
                         // If Store Token not add in firebase
                         //self.endPoint = "https://exchange.buyblynk.com/api/v1/public" // Blynk
-                        self.endPoint = "https://xcover-uat.getinstacash.in/xtracoverexchange/api/v1/public" // XtraCover
+                        
+                        self.endPoint = AppBaseUrl
                         
                         print("self.endPoint", self.endPoint)
                         print("store token not matched in firebase database storeUrl Data")
                         
                         let preferences = UserDefaults.standard
                         //preferences.setValue("https://exchange.buyblynk.com/tnc.php", forKey: "tncendpoint") // Blynk
-                        preferences.setValue("https://xcover-uat.getinstacash.in/xtracoverexchange/tnc.php", forKey: "tncendpoint") // XtraCover
+                        
+                        preferences.setValue(AppBaseTnc, forKey: "tncendpoint") 
+                        
+                         
+                        
                         preferences.setValue(0, forKey: "storeType")
                         preferences.setValue(0, forKey: "tradeOnline")
                         
@@ -1008,7 +1024,9 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         let postString = "IMEINumber=\(IMEI!)&device=\(device)&memory=\(modelCapacity)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=\(ram)&storeToken=\(self.storeToken)"
 //        let postString = "IMEINumber=\(IMEI!)&device=iPhone XR&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=2919613952&storeToken=6017"
 //                let postString = "IMEINumber=\(IMEI!)&device=a0001&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=1919613952&storeToken=6016"
+        
         print("url is :",request,"\nParam is :",postString)
+        
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
