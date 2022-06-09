@@ -972,7 +972,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let appCodeS = UserDefaults.standard.string(forKey: "appCodes") ?? ""
         let apps = appCodeS.split(separator: ";")
         
-        var appCodestr = ""
+        var appCodestring = ""
         
         /*
         if (!UserDefaults.standard.bool(forKey: "deadPixel") && apps[1] != "SBRK01"){
@@ -987,66 +987,66 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         */
         
         if (!UserDefaults.standard.bool(forKey: "deadPixel") && apps[1] != "SBRK01"){
-            appCodestr = "\(appCodestr);SPTS03"
+            appCodestring = "\(appCodestring);SPTS03"
         }
         
         if (!UserDefaults.standard.bool(forKey: "screen") && apps[1] != "SBRK01"){
-            appCodestr = "\(appCodestr);SBRK01"
+            appCodestring = "\(appCodestring);SBRK01"
         }
         
         if (!UserDefaults.standard.bool(forKey: "rotation")){
-            appCodestr = "\(appCodestr);CISS14"
+            appCodestring = "\(appCodestring);CISS14"
             print("Rotation kharaab hai")
         }
         
         if (!UserDefaults.standard.bool(forKey: "proximity")){
-            appCodestr = "\(appCodestr);CISS15"
+            appCodestring = "\(appCodestring);CISS15"
         }
         
         if(!UserDefaults.standard.bool(forKey: "volume")){
-            appCodestr = "\(appCodestr);CISS02;CISS03"
+            appCodestring = "\(appCodestring);CISS02;CISS03"
         }
         
         if(!UserDefaults.standard.bool(forKey: "earphone")){
-            appCodestr = "\(appCodestr);CISS11"
+            appCodestring = "\(appCodestring);CISS11"
             print("Earphone kharaab hai")
         }else {
             print("Earphone sahi hai")
         }
         
         if(!UserDefaults.standard.bool(forKey: "charger")){
-            appCodestr = "\(appCodestr);CISS05"
+            appCodestring = "\(appCodestring);CISS05"
             print("Charger kharaab hai")
         }else {
             print("Charger sahi hai")
         }
         
         if(!UserDefaults.standard.bool(forKey: "camera")){
-            appCodestr = "\(appCodestr);CISS01"
+            appCodestring = "\(appCodestring);CISS01"
         }
         
         if(!UserDefaults.standard.bool(forKey: "fingerprint")){
-            appCodestr = "\(appCodestr);CISS12"
+            appCodestring = "\(appCodestring);CISS12"
         }
         
         if (!UserDefaults.standard.bool(forKey: "WIFI")) || (!UserDefaults.standard.bool(forKey: "Bluetooth")) || (!UserDefaults.standard.bool(forKey: "GPS")) {
-            appCodestr = "\(appCodestr);CISS04"
+            appCodestring = "\(appCodestring);CISS04"
         }
         
         if(!UserDefaults.standard.bool(forKey: "GSM")) {
-            appCodestr = "\(appCodestr);CISS10"
+            appCodestring = "\(appCodestring);CISS10"
         }
         
         if(!UserDefaults.standard.bool(forKey: "mic")){
-            appCodestr = "\(appCodestr);CISS08"
+            appCodestring = "\(appCodestring);CISS08"
         }
         
         if(!UserDefaults.standard.bool(forKey: "Speakers")){
-            appCodestr = "\(appCodestr);CISS07"
+            appCodestring = "\(appCodestring);CISS07"
         }
         
         if(!UserDefaults.standard.bool(forKey: "Vibrator")){
-            appCodestr = "\(appCodestr);CISS13"
+            appCodestring = "\(appCodestring);CISS13"
         }
         
         /*
@@ -1061,16 +1061,20 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         */
         
         //let  = appCodestr.remove(at: appCodestr.startIndex)
-        let testStr = appCodestr.dropFirst()
+        let testStr = appCodestring.dropFirst()
         
         self.appCodeStr = testStr + ";" + appCodeS
         
         if self.appPhysicalQuestionCodeStr != "" {
             self.appCodeStr += self.appPhysicalQuestionCodeStr
-            print("self.appPhysicalQuestionCodeStr",self.appPhysicalQuestionCodeStr)
+            //print("self.appPhysicalQuestionCodeStr",self.appPhysicalQuestionCodeStr)
         }
         
-        print("self.appCodeStr",self.appCodeStr)
+        if !self.appCodeStr.contains("STON01") {
+            self.appCodeStr += "STON01"
+        }
+        
+        //print("self.appCodeStr",self.appCodeStr)
     }
     
 }

@@ -11,7 +11,6 @@ import SwiftyJSON
 
 class FirstQViewController: UIViewController {
 
-    
     @IBOutlet weak var ans1view: UIButton!
     @IBOutlet weak var ans2view: UIButton!
     @IBOutlet weak var ans3view: UIButton!
