@@ -179,7 +179,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
     @IBOutlet weak var findStoreBtn: UIButton!
     @IBOutlet weak var scanQRBtn: UIButton!
     @IBOutlet weak var previousBtn: UIButton!
-    @IBOutlet weak var smartExLoadingImage: UIImageView!
+    //@IBOutlet weak var smartExLoadingImage: UIImageView!
     //@IBOutlet weak var retryBtn: UIButton!
     @IBOutlet weak var tradeInOnlineBtn: UIButton!
     @IBOutlet weak var storeTokenEdit: UITextField!
@@ -225,7 +225,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         
         let uuid = UUID().uuidString
         print(uuid)
-        smartExLoadingImage.isHidden = true
+        //smartExLoadingImage.isHidden = true
         imeiLabel.text = IMEINumber
     
     }
