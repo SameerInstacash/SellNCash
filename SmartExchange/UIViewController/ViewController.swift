@@ -1036,14 +1036,116 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
             
             guard let data = data, error == nil else {
                 DispatchQueue.main.async() {
-                    //self.smartExLoadingImage.layer.removeAllAnimations()
-                    //self.smartExLoadingImage.isHidden = true
-                    self.hud.dismiss()
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
-//                self.retryBtn.isHidden = false
+                
                 return
             }
             
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: data)
+                if json["status"] == "Success" {
+                    print("\(json)")
+                                            
+                    let responseString = String(data: data, encoding: .utf8)
+                    self.responseData = responseString!
+                    let preferences = UserDefaults.standard
+                    var productIdenti = "0"
+                    let productData = json["productData"]
+                    if productData["id"].string ?? "" != "" {
+                    
+                        productIdenti = productData["id"].string ?? ""
+                        
+                        let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
+                        print("isTradeInOnline value is",isTradeInOnline)
+                        
+                        if isTradeInOnline {
+                            
+                            let productName = productData["name"]
+                            let productImage = productData["image"]
+                            preferences.set(productIdenti, forKey: "product_id")
+                            preferences.set("\(productName)", forKey: "productName")
+                            preferences.set("\(self.appCodes)", forKey: "appCodes")
+                            preferences.set("\(productImage)", forKey: "productImage")
+                            
+                            preferences.set(json["customerId"].string!, forKey: "customer_id")
+                            preferences.set(self.storeToken, forKey: "store_code")
+                            let serverData = json["serverData"]
+                            print("\n\n\(serverData["currencyJson"])")
+                            let jsonEncoder = JSONEncoder()
+                            
+                            let currencyJSON = serverData["currencyJson"]
+                            let jsonData = try jsonEncoder.encode(currencyJSON)
+                            let jsonString = String(data: jsonData, encoding: .utf8)
+                            preferences.set(jsonString, forKey: "currencyJson")
+                            let priceData = json["priceData"]
+                            let uptoPrice = priceData["msg"].string ?? ""
+                            print("uptoPrice", uptoPrice)
+                            
+                            DispatchQueue.main.async() {
+                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
+                                //let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserDetailsVC") as! UserDetailsVC
+                                self.present(vc, animated: true, completion: nil)
+                            }
+                            
+                        }else {
+                            
+                            if productIdenti == self.productId {
+                                let productName = productData["name"]
+                                let productImage = productData["image"]
+                                preferences.set(productIdenti, forKey: "product_id")
+                                preferences.set("\(productName)", forKey: "productName")
+                                preferences.set("\(self.appCodes)", forKey: "appCodes")
+                                preferences.set("\(productImage)", forKey: "productImage")
+                                
+                                preferences.set(json["customerId"].string!, forKey: "customer_id")
+                                preferences.set(self.storeToken, forKey: "store_code")
+                                let serverData = json["serverData"]
+                                print("\n\n\(serverData["currencyJson"])")
+                                let jsonEncoder = JSONEncoder()
+                                
+                                let currencyJSON = serverData["currencyJson"]
+                                let jsonData = try jsonEncoder.encode(currencyJSON)
+                                let jsonString = String(data: jsonData, encoding: .utf8)
+                                preferences.set(jsonString, forKey: "currencyJson")
+                                let priceData = json["priceData"]
+                                let uptoPrice = priceData["msg"].string ?? ""
+                                print("uptoPrice", uptoPrice)
+                                
+                                DispatchQueue.main.async() {
+                                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
+                                    self.present(vc, animated: true, completion: nil)
+                                }
+                            }else{
+                                DispatchQueue.main.async {
+                                    self.view.makeToast("Device Mismatch found!", duration: 2.0, position: .bottom)
+                                }
+                            }
+                            
+                        }
+                        
+                    }else{
+                        DispatchQueue.main.async() {
+                            self.view.makeToast("Device not found!", duration: 2.0, position: .bottom)
+                        }
+                    }
+                  
+                }else{
+                    
+                    DispatchQueue.main.async {
+                        self.view.makeToast("Please make sure you've entered the details in the POS.", duration: 2.0, position: .bottom)
+                    }
+                    
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
@@ -1189,7 +1291,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         
                     }
                 }
-            }
+            }*/
+            
         }
         task.resume()
     }

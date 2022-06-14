@@ -810,6 +810,44 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 return
             }
             
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: data)
+                if json["status"] == "Success" {
+                    print("Question data is:","\(json)")
+                    
+                    AppHardwareQuestionsData = CosmeticQuestions.init(json: json)
+                    
+                    arrAppHardwareQuestions = [Questions]()
+                    arrAppQuestionsAppCodes = [String]()
+                    
+                    for enableQuestion in AppHardwareQuestionsData?.msg?.questions ?? [] {
+                        if enableQuestion.isInput == "1" {
+                            arrAppHardwareQuestions?.append(enableQuestion)
+                            //print("AppHardwareQuestions are ", arrAppHardwareQuestions ?? [])
+                            hardwareQuestionsCount += 1
+                            print("hardwareQuestionsCount is ", hardwareQuestionsCount)
+                        }
+                    }
+                    
+                    DispatchQueue.main.async() {
+                        self.CosmeticHardwareQuestions()
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
@@ -856,7 +894,8 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                         self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
                     }
                 }
-            }
+            }*/
+            
         }
         task.resume()
     }

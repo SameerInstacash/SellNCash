@@ -79,7 +79,7 @@ class PreviousQuotationsViewController: UIViewController {
             }
             
             guard let data = data, error == nil else {
-                
+                /*
                 // check for fundamental networking error
                 print("error=\(error.debugDescription)")
                 
@@ -92,11 +92,64 @@ class PreviousQuotationsViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     self.view.makeToast("internet_prompt".localized, duration: 2.0, position: .bottom)
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
+            
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: data)
+                if json["status"] == "Success" {
+                    
+                    print(json)
+                    DispatchQueue.main.async() {
+                        let msg = json["msg"]
+                        let id = msg["id"].string ?? ""
+                        let name = msg["name"].string ?? ""
+                        let mobileNumber = msg["mobileNumber"].string ?? ""
+                        let email = msg["email"].string ?? ""
+                        let productSummary = msg["productSummary"] ?? ""
+                        self.mobText.text = mobileNumber
+                        self.nameText.text = name
+                        self.emailText.text = email
+                        self.refId.text = id
+                        self.prefTime.text = "Not Set"
+                        self.topStack.isHidden = false
+                        self.secondStack.isHidden = false
+                        self.submitBtnPrev.isHidden = true
+                        self.referenceNumText.isHidden = true
+                        self.tableView.isHidden = false
+                        let htmlString = productSummary.string ?? ""
+                        // works even without <html><body> </body></html> tags, BTW
+                        let data = htmlString.data(using: String.Encoding.unicode)! // mind "!"
+                        let attrStr = try? NSAttributedString( // do catch
+                            data: data,
+                            options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],
+                            documentAttributes: nil)
+                        // suppose we have an UILabel, but any element with NSAttributedString will do
+                        self.tableView.attributedText = attrStr
+                        
+                    }
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 // check for http errors
                 
@@ -155,8 +208,7 @@ class PreviousQuotationsViewController: UIViewController {
                     
                 }
                 
-            }
-            
+            }*/
             
         }
         task.resume()

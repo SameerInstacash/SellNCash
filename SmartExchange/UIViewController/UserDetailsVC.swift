@@ -247,6 +247,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
             
             guard let dataThis = data, error == nil else {
                 
+                /*
                 //SwiftSpinner.hide()
                 
                 DispatchQueue.main.async {
@@ -255,11 +256,196 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                     
                     print("error=\(error.debugDescription)")
                     self.view.makeToast("Please Check Internet conection.", duration: 2.0, position: .bottom)
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
+            
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: dataThis)
+                if json["status"] == "Success" {
+                    
+                    DispatchQueue.main.async() {
+                        
+                        do {
+                            let resp = try (JSONSerialization.jsonObject(with: dataThis, options: []) as? [String:Any] ?? [:])
+                            
+                            print(" Form Response is:", resp)
+                            
+                            self.responseDict = resp["msg"] as? [String:Any] ?? [:]
+                           
+                            //print(" First name is: \(self.responseDict)")
+                            
+                            for (ind,item) in self.responseDict.enumerated() {
+                                print(ind)
+                                //print(item)
+                                
+                                self.arrDictKeys1.append(item.key)
+                                //self.arrDictKeys.append(item.key)
+                                //self.arrDictValues.append([item.value])
+                                
+                                if item.key == "Bank Name" {
+                                   
+                                    /*
+                                    if let arr = (item.value as! NSArray)[3] as? [String] {
+                                        self.arrDrop = arr
+                                    }
+                                    */
+                                    
+                                    if let arr = item.value as? [Any] {
+                                        if arr.count > 3 {
+                                            if let bankNameArr = arr[3] as? NSArray {
+                                                self.arrDrop = bankNameArr as! [String]
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            
+                            self.arrDictKeys = self.arrDictKeys1.sorted()
+                        
+                    
+                            if self.arrDictKeys.contains("name") {
+                                if let nameIndex = self.arrDictKeys.index(of: "name") {
+                                    let element = self.arrDictKeys.remove(at: nameIndex)
+                                    self.arrDictKeys.insert(element, at: 0)
+                                }
+                            }
+                            
+                            if self.arrDictKeys.contains("mobile") {
+                                if let mobileIndex = self.arrDictKeys.index(of: "mobile") {
+                                    let element = self.arrDictKeys.remove(at: mobileIndex)
+                                    self.arrDictKeys.insert(element, at: 1)
+                                }
+                            }
+                            
+                            if self.arrDictKeys.contains("email") {
+                                if let emailIndex = self.arrDictKeys.index(of: "email") {
+                                    let element = self.arrDictKeys.remove(at: emailIndex)
+                                    self.arrDictKeys.insert(element, at: 2)
+                                }
+                            }
+                            
+                            if self.arrDictKeys.contains("Bank Holders Name") {
+                                if let BankHoldersNameIndex = self.arrDictKeys.index(of: "Bank Holders Name") {
+                                    if self.arrDictKeys.count > 3 {
+                                        let element = self.arrDictKeys.remove(at: BankHoldersNameIndex)
+                                        self.arrDictKeys.insert(element, at: 3)
+                                    }
+                                }
+                            }
+                           
+                            if self.arrDictKeys.contains("Bank Account Number") {
+                                if let BankAccountNumberIndex = self.arrDictKeys.index(of: "Bank Account Number") {
+                                    if self.arrDictKeys.count > 4 {
+                                        let element = self.arrDictKeys.remove(at: BankAccountNumberIndex)
+                                        self.arrDictKeys.insert(element, at: 4)
+                                    }
+                                }
+                            }
+                            
+                            if self.arrDictKeys.contains("IFSC") {
+                                if let IFSCIndex = self.arrDictKeys.index(of: "IFSC") {
+                                    if self.arrDictKeys.count > 5 {
+                                        let element = self.arrDictKeys.remove(at: IFSCIndex)
+                                        self.arrDictKeys.insert(element, at: 5)
+                                    }
+                                }
+                            }
+                            
+                            if self.arrDictKeys.contains("Bank Name") {
+                                if let BankNameIndex = self.arrDictKeys.index(of: "Bank Name") {
+                                    if self.arrDictKeys.count > 6 {
+                                        let element = self.arrDictKeys.remove(at: BankNameIndex)
+                                        self.arrDictKeys.insert(element, at: 6)
+                                    }
+                                }
+                            }
+                            
+                            
+                            print("self.arrDictKeys are",self.arrDictKeys)
+                            
+                            
+                            /*
+                            "name"
+                            "mobile"
+                            "email"
+                            "Bank Holders Name"
+                            "Bank Account Number"
+                            "IFSC"
+                            "Bank Name"
+                            */
+                            
+                            for item in self.arrDictKeys {
+                                //let val = self.responseDict[item as? String ?? ""]
+                                let val = self.responseDict[item]
+                                self.arrDictValues.append([val ?? []])
+                            }
+                            
+                            // sameer 2/6/21
+                            //for (index,keyFld) in (self.arrDictKeys as! [String]).enumerated() {
+                            for (index,keyFld) in (self.arrDictKeys).enumerated() {
+                                
+                                let data = self.arrDictValues[index]
+                                let arrData = data[0] as! Array<Any>
+                                
+                                if !((arrData[0] as? String) == "html") {
+                                
+                                    if arrData[1] as? Int == 1 {
+                                        self.bankDict[keyFld] = ""
+                                        self.arrBankKeysMendatory.append(keyFld)
+                                    }else {
+                                        self.bankDict[keyFld] = ""
+                                        //self.arrBankKeysOptional.append(keyFld)
+                                    }
+                                    
+                                }
+                            }
+                            
+                            print(self.bankDict)
+                            print(self.arrBankKeysMendatory)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                self.userDetailTableView.dataSource = self
+                                self.userDetailTableView.delegate = self
+                                
+                                self.userDetailTableView.reloadData()
+                                //self.formTableView.tableFooterView = UIView()
+                            }
+                            
+                            
+                        } catch let error as NSError {
+                            print(error)
+                            DispatchQueue.main.async() {
+                                self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
+                            }
+                        }
+
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 //SwiftSpinner.hide()
                 
@@ -436,7 +622,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                     }
                 }
                 
-            }
+            }*/
             
         }
         task.resume()
@@ -470,18 +656,77 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
             
             guard let dataThis = data, error == nil else {
                 //SwiftSpinner.hide()
-                
+                /*
                 DispatchQueue.main.async {
                     self.hud.dismiss()
                     //check for fundamental networking error
                     print("error=\(error.debugDescription)")
                     
                     self.view.makeToast("Please Check Internet conection.", duration: 2.0, position: .bottom)
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
+            
+            //* SAMEER-14/6/22
+            
+            do {
+                let json = try JSON(data: dataThis)
+                print(json)
+                
+                if json["status"].string == "Success" {
+                    
+                    DispatchQueue.main.async {
+                        
+                        /*
+                         if let success = self.formSubmit {
+                         success(self.bankDetails)
+                         self.dismiss(animated: false, completion: nil)
+                         }*/
+                        
+                        DispatchQueue.main.async() {
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "PriceVC") as! PriceViewController
+                            
+                            if self.questionAppCodeStr != "" {
+                                vc.appPhysicalQuestionCodeStr = self.questionAppCodeStr
+                                print("self.questionAppCodeStr", self.questionAppCodeStr)
+                            }else {
+                                vc.appCodeStr = self.appCodeStr
+                                print("self.appCodeStr", self.appCodeStr)
+                            }
+                            
+                            print("Result JSON 4: \(self.resultJOSN)")
+                            vc.resultJOSN = self.resultJOSN
+                            
+                            vc.modalPresentationStyle = .fullScreen
+                            self.present(vc, animated: true, completion: nil)
+                        }
+                        
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+                
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 //SwiftSpinner.hide()
                 DispatchQueue.main.async {
@@ -549,7 +794,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                     
                 }
                 
-            }
+            }*/
             
         }
         task.resume()

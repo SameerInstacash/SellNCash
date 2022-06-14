@@ -169,9 +169,9 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.loaderImage.image = yourImage
         self.loaderImage.rotate360DegreesAgain()
         
-        let uploadText = "upload_btn_text".localized
+        //let uploadText = "upload_btn_text".localized
         //let scheduleText = "schedule_btn_text".localized
-        self.uploadIdBtn.setTitle(uploadText, for: .normal)
+        //self.uploadIdBtn.setTitle(uploadText, for: .normal)
         //scheduleVisitBtn.setTitle(scheduleText, for: .normal)
         
         let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
@@ -263,7 +263,6 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         
-        
         if let url = Foundation.URL(string: "tel://\(URL.absoluteString)"), UIApplication.shared.canOpenURL(url) {
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url)
@@ -305,6 +304,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             guard let dataThis = data, error == nil else {
+                
+                /*
                 //SwiftSpinner.hide()
                 
                 DispatchQueue.main.async {
@@ -325,11 +326,149 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         }
                     }
                     
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
+            
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: dataThis)
+                if json["status"] == "Success" {
+                    
+                    print("Price Success Response is:", json)
+                    
+                    if  let offerpriceString = json["msg"].string {
+                        
+                        let jsonString = UserDefaults.standard.string(forKey: "currencyJson")
+                        var multiplier:Float = 1.0
+                        var symbol:String = "₹"
+                        var curCode:String = "INR"
+                        let symbolNew = json["currency"].string
+                        
+                        if let dataFromString = jsonString?.data(using: .utf8, allowLossyConversion: false) {
+                            print("currency JSON")
+                            let currencyJson = try JSON(data: dataFromString)
+                            multiplier = Float(currencyJson["Conversion Rate"].string!)!
+                            print("multiplier: \(multiplier)")
+                            symbol = currencyJson["Symbol"].string!
+                            curCode = currencyJson["Code"].string!
+                        }else{
+                            print("No values")
+                        }
+                        
+                        /*
+                        var diagnosisChargeString: Float
+                        if ( UserDefaults.standard.string(forKey: "store_code") == "6307") {
+                            diagnosisChargeString = Float(json["pawn"].intValue)
+                        }else{
+                            diagnosisChargeString = Float(json["diagnosisCharges"].intValue)
+                        }
+                        */
+                        
+                        
+                        var diagnosisChargeString = Float()
+                        DispatchQueue.main.async() {
+                            
+                            if let type = UserDefaults.standard.value(forKey: "storeType") as? Int {
+                                if type == 0 {
+                                    diagnosisChargeString = Float(json["diagnosisCharges"].intValue)
+                                }else {
+                                    diagnosisChargeString = Float(json["pawn"].intValue)
+                                }
+                            }
+                            
+                            
+                            if let online = UserDefaults.standard.value(forKey: "tradeOnline") as? Int {
+                                if online == 0 {
+                                    //self.tradeInBtn.isHidden = true
+                                }else {
+                                    //self.tradeInBtn.isHidden = false
+                                }
+                            }
+                        }
+                        
+                        
+                        if symbol != symbolNew {
+                            diagnosisChargeString = diagnosisChargeString * multiplier
+                        }
+                        
+                        var offer = Float(offerpriceString)!
+                        if curCode != symbolNew {
+                            offer = offer * multiplier
+                        }
+                        
+                        let payable = offer - diagnosisChargeString
+                        print("payable: \(offer - diagnosisChargeString) ")
+                        
+                        //self.saveResult(price: offerpriceString)
+                        DispatchQueue.main.async() {
+                            
+                            self.saveResult(price: offerpriceString)
+                            
+                            if (json["deviceStatusFlag"].exists() && json["deviceStatusFlag"].intValue == 1) {
+                                
+                                self.diagnosisChargesInfo.isHidden = true
+                                self.diagnosisCharges.isHidden = true
+                                self.payableAmount.isHidden = true
+                                self.payableBtnInfo.isHidden = true
+                                
+                                self.offeredPriceInfo.text = "Device Status"
+                                self.offeredPrice.text = json["deviceStatus"].stringValue
+                                
+                            }else{
+                                /*
+                                if (UserDefaults.standard.string(forKey: "store_code") == "6307"){
+                                    self.payableAmount.isHidden = true
+                                    self.payableBtnInfo.isHidden = true
+                                    self.offeredPriceInfo.text = "Trade-In"
+                                    self.diagnosisChargesInfo.text = "Pawn"
+                                }
+                                */
+                                
+                                if let type = UserDefaults.standard.value(forKey: "storeType") as? Int {
+                                    if type == 0 {
+                                        
+                                        
+                                    }else {
+                                        self.diagnosisChargesInfo.text = "Pawn"
+                                        self.payableBtnInfo.text = "Trade-In"
+                                    }
+                                }
+
+                                self.payableAmount.text = "\(symbol)\(Int(payable))"
+                                self.diagnosisCharges.text = "\(symbol)\(Int(diagnosisChargeString))"
+                                self.offeredPrice.text = "\(symbol)\(Int(offer))"
+                                //SwiftSpinner.hide()
+                                self.hud.dismiss()
+                            }
+                        }
+                        
+                    }else{
+                        DispatchQueue.main.async {
+                            self.view.makeToast("Something went wrong!!", duration: 2.0, position: .bottom)
+                        }
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 //
                 //SwiftSpinner.hide()
@@ -484,7 +623,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                 }
                 
-            }
+            }*/
             
         }
         task.resume()
@@ -537,7 +676,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             guard let dataThis = data, error == nil else {
-                
+                /*
                 DispatchQueue.main.async {
                     //SwiftSpinner.hide()
                     self.hud.dismiss()
@@ -556,12 +695,54 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         }
                     }
                     
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           //
+            
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: dataThis)
+                if json["status"] == "Success" {
+                    
+                    print("savingResult Success Response is:", json)
+                    
+                    let msg = json["msg"]
+                    self.orderId = msg["orderId"].string ?? ""
+                    self.isSynced = true
+                    
+                    DispatchQueue.main.async{
+                        self.loaderImage.isHidden = true
+                        self.uploadIdBtn.isHidden = false
+                        self.refValueLabel.isHidden = false
+                        let refno = "reference_no".localized
+                        self.refValueLabel.text = "\(refno): \(self.orderId)"
+                        
+                        DispatchQueue.main.async {
+                            self.view.makeToast("Details Synced to the server. Please contact Store Executive for further information", duration: 1.0, position: .bottom)
+                        }
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            
+            /* SAMEER-14/6/22
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 
                 DispatchQueue.main.async {
                     //SwiftSpinner.hide()
@@ -608,9 +789,8 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     DispatchQueue.main.async() {
                         self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
                     }
-                    
                 }
-            }
+            }*/
             
             
         }
@@ -652,129 +832,165 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
     */
     
     
-    @IBAction func uploadIdBtnClicked(_ sender: Any) {
-        if (isSynced){
-            let camera = DKCamera()
-            camera.didCancel = {
-                self.dismiss(animated: true, completion: nil)
-            }
-            camera.didFinishCapturingImage = { (image: UIImage?, metadata: [AnyHashable : Any]?) in
-                self.dismiss(animated: true, completion: nil)
-                let newImage = self.resizeImage(image: image ?? UIImage(), newWidth: 800)
-                
-                
-                
-                let backgroundImage = newImage
-                let watermarkImage = #imageLiteral(resourceName: "watermark")
-        UIGraphicsBeginImageContextWithOptions(backgroundImage.size, false, 0.0)
-                backgroundImage.draw(in: CGRect(x: 0.0, y: 0.0, width: backgroundImage.size.width, height: backgroundImage.size.height))
-                watermarkImage.draw(in: CGRect(x: 0, y: 0, width: watermarkImage.size.width, height: backgroundImage.size.height))
-                
-                
-                let result = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
-                
-                let imageData:NSData = UIImagePNGRepresentation(result ?? newImage) as! NSData
-                
-                let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-
-                var request = URLRequest(url: URL(string: "\(AppBaseUrl)/idProof")!)
-                request.httpMethod = "POST"
-                let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
-                let postString = "customerId=\(customerId)&orderId=\(self.orderId)&photo=\(strBase64)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
-                
-                print("url is :",request,"\nParam is :",postString)
-                
-                //SwiftSpinner.show("")
-                self.hud.textLabel.text = ""
-                self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
-                self.hud.show(in: self.view)
-
-                request.httpBody = postString.data(using: .utf8)
-                let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                    
-                    DispatchQueue.main.async {
-                        self.hud.dismiss()
-                    }
-                    
-                    guard let dataThis = data, error == nil else {
-                        
-                        do{
-                            let json = try JSON(data: data ?? Data())
-                            print(" idProof Error Response is:", json)
-                            
-                            let msg = json["msg"].string
-                            DispatchQueue.main.async() {
-                                self.view.makeToast(msg, duration: 3.0, position: .bottom)
-                            }
-                        }catch {
-                            DispatchQueue.main.async() {
-                                self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
-                            }
-                        }
-                        
-                        
-                        //DispatchQueue.main.async {
-                            //SwiftSpinner.hide()
-                            //self.hud.dismiss()
-                            // check for fundamental networking error
-                            //self.view.makeToast("Please Check Internet conection.", duration: 2.0, position: .bottom)
-                        //}
-                        
-                        return
-                    }
-
-                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           //
-                        //SwiftSpinner.hide()
-                        
-                        do{
-                            let json = try JSON(data: data ?? Data())
-                            print(" idProof Error Response is:", json)
-                            
-                            let msg = json["msg"].string
-                            DispatchQueue.main.async() {
-                                self.view.makeToast(msg, duration: 3.0, position: .bottom)
-                            }
-                        }catch {
-                            DispatchQueue.main.async() {
-                                self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
-                            }
-                        }
-                        
-                        //DispatchQueue.main.async {
-                            //self.hud.dismiss()
-                            // check for http errors
-                        //}
-
-                    } else{
-                        DispatchQueue.main.async {
-                            //SwiftSpinner.hide()
-                            self.hud.dismiss()
-                            
-                            do {
-                                let resp = try (JSONSerialization.jsonObject(with: dataThis, options: []) as? [String:Any] ?? [:])
-                                print(" Form Response is:", resp)
-                            }catch let error as NSError {
-                                print(error)
-                                self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
-                            }
-                            
-                            self.view.makeToast("Photo Id uploaded successfully!", duration: 1.0, position: .bottom)
-                            
-                        }
-
-                    }
-
+    @IBAction func uploadIdBtnClicked(_ sender: UIButton) {
+        
+        if sender.titleLabel?.text == "Scan Identity Card (IC) to proceed" {
+            
+            if (isSynced){
+                let camera = DKCamera()
+                camera.didCancel = {
+                    self.dismiss(animated: true, completion: nil)
                 }
+                camera.didFinishCapturingImage = { (image: UIImage?, metadata: [AnyHashable : Any]?) in
+                    self.dismiss(animated: true, completion: nil)
+                    let newImage = self.resizeImage(image: image ?? UIImage(), newWidth: 800)
+                    
+                    
+                    let backgroundImage = newImage
+                    let watermarkImage = #imageLiteral(resourceName: "watermark")
+                    UIGraphicsBeginImageContextWithOptions(backgroundImage.size, false, 0.0)
+                    backgroundImage.draw(in: CGRect(x: 0.0, y: 0.0, width: backgroundImage.size.width, height: backgroundImage.size.height))
+                    watermarkImage.draw(in: CGRect(x: 0, y: 0, width: watermarkImage.size.width, height: backgroundImage.size.height))
+                    
+                    
+                    let result = UIGraphicsGetImageFromCurrentImageContext()
+                    UIGraphicsEndImageContext()
+                    
+                    let imageData:NSData = UIImagePNGRepresentation(result ?? newImage) as! NSData
+                    
+                    let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
 
-                task.resume()
+                    var request = URLRequest(url: URL(string: "\(AppBaseUrl)/idProof")!)
+                    request.httpMethod = "POST"
+                    let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
+                    let postString = "customerId=\(customerId)&orderId=\(self.orderId)&photo=\(strBase64)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
+                    
+                    //print("url is :",request,"\nParam is :",postString)
+                    
+                    //SwiftSpinner.show("")
+                    self.hud.textLabel.text = ""
+                    self.hud.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.4)
+                    self.hud.show(in: self.view)
+
+                    request.httpBody = postString.data(using: .utf8)
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        
+                        DispatchQueue.main.async {
+                            self.hud.dismiss()
+                        }
+                        
+                        guard let dataThis = data, error == nil else {
+                            
+                            DispatchQueue.main.async() {
+                                self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
+                            }
+                            
+                            /* SAMEER-14/6/22
+                            do{
+                                let json = try JSON(data: data ?? Data())
+                                print(" idProof Error Response is:", json)
+                                
+                                let msg = json["msg"].string
+                                DispatchQueue.main.async() {
+                                    self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                                }
+                            }catch {
+                                DispatchQueue.main.async() {
+                                    self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
+                                }
+                            }*/
+                          
+                            return
+                        }
+                        
+                        //* SAMEER-14/6/22
+                        do {
+                            let json = try JSON(data: dataThis)
+                            if json["status"] == "Success" {
+                                
+                                DispatchQueue.main.async() {
+                                    self.uploadIdBtn.setTitle("Back to home", for: .normal)
+                                    self.view.makeToast("Photo Id uploaded successfully!", duration: 1.0, position: .bottom)
+                                }
+                                
+                            }else {
+                                let msg = json["msg"].string
+                                DispatchQueue.main.async() {
+                                    self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                                }
+                            }
+                        }catch {
+                            DispatchQueue.main.async() {
+                                self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                            }
+                        }
+                        
+                        
+                        /* SAMEER-14/6/22
+                        if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           //
+                            //SwiftSpinner.hide()
+                            
+                            do{
+                                let json = try JSON(data: data ?? Data())
+                                print(" idProof Error Response is:", json)
+                                
+                                let msg = json["msg"].string
+                                DispatchQueue.main.async() {
+                                    self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                                }
+                            }catch {
+                                DispatchQueue.main.async() {
+                                    self.view.makeToast("JSON Exception", duration: 3.0, position: .bottom)
+                                }
+                            }
+                            
+                            //DispatchQueue.main.async {
+                                //self.hud.dismiss()
+                                // check for http errors
+                            //}
+
+                        } else{
+                            DispatchQueue.main.async {
+                                //SwiftSpinner.hide()
+                                self.hud.dismiss()
+                                
+                                do {
+                                    let resp = try (JSONSerialization.jsonObject(with: dataThis, options: []) as? [String:Any] ?? [:])
+                                    print(" Form Response is:", resp)
+                                }catch let error as NSError {
+                                    print(error)
+                                    self.view.makeToast("JSON Exception", duration: 2.0, position: .bottom)
+                                }
+                                
+                                self.view.makeToast("Photo Id uploaded successfully!", duration: 1.0, position: .bottom)
+                                
+                            }
+
+                        }*/
+
+                    }
+
+                    task.resume()
+                }
+                self.present(camera, animated: true, completion: nil)
+            }else{
+                DispatchQueue.main.async {
+                    self.view.makeToast("Please wait for the results to sync to the server!", duration: 2.0, position: .bottom)
+                }
             }
-            self.present(camera, animated: true, completion: nil)
-        }else{
-            DispatchQueue.main.async {
-                self.view.makeToast("Please wait for the results to sync to the server!", duration: 2.0, position: .bottom)
-            }
+
+            
+        }else {
+            
+            // Navigate to home page
+            let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+            let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let centerVC = mainStoryBoard.instantiateViewController(withIdentifier: "HomeVC") as! ViewController
+            appDel.window!.rootViewController = centerVC
+            appDel.window!.makeKeyAndVisible()
+            
         }
+        
     }
 
     

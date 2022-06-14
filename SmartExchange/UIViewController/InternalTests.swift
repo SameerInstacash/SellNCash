@@ -474,18 +474,49 @@ class InternalTestsVC: UIViewController,CBCentralManagerDelegate {
         print(postString)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error.debugDescription)")
-                
-                //SwiftSpinner.hide()
+            
+            DispatchQueue.main.async() {
                 self.hud.dismiss()
-                
+            }
+            
+            guard let data = data, error == nil else {
+                /* SAMEER-14/6/22
+                // check for fundamental networking error
+                print("error=\(error.debugDescription)")
+                //SwiftSpinner.hide()
                 DispatchQueue.main.async {
                     self.view.makeToast("internet_prompt".localized, duration: 2.0, position: .bottom)
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
+                
                 return
             }
             
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: data)
+                if json["status"] == "Success" {
+                    
+                    let productName = json["msg"]["name"].string ?? "productName"
+                    let productImage = json["msg"]["image"].string ?? "productImage"
+                    print(productName,productImage)
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
                 
                 //SwiftSpinner.hide()
@@ -498,14 +529,12 @@ class InternalTestsVC: UIViewController,CBCentralManagerDelegate {
                     let json = try JSON(data: data)
                         if json["status"] == "Success" {
                             let productName = json["msg"]["name"].string!
-                            
                             let productImage = json["msg"]["image"].string!
-                            
                         }
                     }catch{
                 }
                 
-            }
+            }*/
             
             
         }

@@ -375,19 +375,60 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
             }
             
             guard let data = data, error == nil else {
+                /*
                 // check for fundamental networking error
                 DispatchQueue.main.async() {
                     print("error=\(error.debugDescription)")
                     //self.loaderImg.layer.removeAllAnimations()
                     //self.loaderImg.isHidden = true
                     //self.retryBtn.isHidden = false
-                    
-                    self.hud.dismiss()
+                }*/
+                
+                DispatchQueue.main.async() {
+                    self.view.makeToast(error?.localizedDescription, duration: 3.0, position: .bottom)
                 }
                 
                 return
             }
             
+            
+            //* SAMEER-14/6/22
+            do {
+                let json = try JSON(data: data)
+                if json["status"] == "Success" {
+                    
+                    DispatchQueue.main.async() {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "PriceVC") as! PriceViewController
+                        
+                        if self.questionAppCodeStr != "" {
+                            vc.appPhysicalQuestionCodeStr = self.questionAppCodeStr
+                            print("self.questionAppCodeStr", self.questionAppCodeStr)
+                        }else {
+                            vc.appCodeStr = self.appCodeStr
+                            print("self.appCodeStr", self.appCodeStr)
+                        }
+                        
+                        print("Result JSON 4: \(self.resultJOSN)")
+                        vc.resultJOSN = self.resultJOSN
+                        //vc.myArray = myArray
+                        //print(myArray)
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                    }
+                    
+                }else {
+                    let msg = json["msg"].string
+                    DispatchQueue.main.async() {
+                        self.view.makeToast(msg, duration: 3.0, position: .bottom)
+                    }
+                }
+            }catch {
+                DispatchQueue.main.async() {
+                    self.view.makeToast("Something went wrong!!", duration: 3.0, position: .bottom)
+                }
+            }
+            
+            /* SAMEER-14/6/22
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
@@ -413,7 +454,8 @@ class UserDetailsViewController: UIViewController, UITextFieldDelegate {
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                 }
-            }
+            }*/
+            
         }
         task.resume()
     }
