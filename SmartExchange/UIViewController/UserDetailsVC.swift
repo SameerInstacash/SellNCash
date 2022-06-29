@@ -32,7 +32,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     var endPoint = AppBaseUrl // Live
 
     //var drop = UIDropDown()
-    var arrDrop = [String]()
+    //var arrDrop = [String]()
     
     var responseDictIN = [String : Any]()
     var responseDict = [String : Any]()
@@ -162,7 +162,11 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     
     //MARK:- UITextField Delegates methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.placeHold = textField.placeholder ?? ""
+        //self.placeHold = textField.placeholder ?? ""
+        
+        //cellTextBox.txtField.placeholder = (self.arrDictKeys[indexPath.row])
+        
+        self.placeHold = self.arrDictKeys[textField.tag]
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -298,13 +302,14 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                                     }
                                     */
                                     
+                                    /*
                                     if let arr = item.value as? [Any] {
                                         if arr.count > 3 {
                                             if let bankNameArr = arr[3] as? NSArray {
                                                 self.arrDrop = bankNameArr as! [String]
                                             }
                                         }
-                                    }
+                                    }*/
                                     
                                 }
                                 
@@ -873,7 +878,6 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
         let data = self.arrDictValues[indexPath.row]
-        
         let arrData = data[0] as? Array<Any>
         
         if (arrData?[0] as? String) == "text" {
@@ -882,16 +886,21 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
             
             let cellTextBox = tableView.dequeueReusableCell(withIdentifier: "TextBoxCell", for: indexPath) as! TextBoxCell
             
-            cellTextBox.txtField.placeholder = (self.arrDictKeys[indexPath.row])
+            //cellTextBox.txtField.placeholder = (self.arrDictKeys[indexPath.row])
+            if (arrData?.count ?? 0) > 2 {
+                cellTextBox.txtField.placeholder = arrData?[2] as? String ?? ""
+            }
+            
+            
             cellTextBox.txtField.tag = indexPath.row
             cellTextBox.txtField.delegate = self
             cellTextBox.txtField.autocorrectionType = .no
             
-            if cellTextBox.txtField.placeholder == "mobile" {
+            if cellTextBox.txtField.placeholder == "mobile" || cellTextBox.txtField.placeholder == "Mobile*" {
                 cellTextBox.txtField.keyboardType = .numberPad
-            }else if cellTextBox.txtField.placeholder == "email" {
+            }else if cellTextBox.txtField.placeholder == "email"  || cellTextBox.txtField.placeholder == "Email*" {
                 cellTextBox.txtField.keyboardType = .emailAddress
-            }else if cellTextBox.txtField.placeholder == "Bank Name" {
+            }else if cellTextBox.txtField.placeholder == "Bank Name" || cellTextBox.txtField.placeholder == "mobile" {
                 cellTextBox.txtField.keyboardType = .default
                 //cellTextBox.txtField.isUserInteractionEnabled = false
             }else {
@@ -922,9 +931,13 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
             
             let cellTextSelect = tableView.dequeueReusableCell(withIdentifier: "SelectTextCell", for: indexPath) as! SelectTextCell
             
+            //cellTextSelect.selectTextField.placeholder = (self.arrDictKeys[indexPath.row])
+            if (arrData?.count ?? 0) > 2 {
+                cellTextSelect.selectTextField.placeholder = arrData?[2] as? String ?? ""
+            }
+            
             cellTextSelect.selectTextField.tag = indexPath.row
             cellTextSelect.selectTextField.delegate = self
-            cellTextSelect.selectTextField.placeholder = (self.arrDictKeys[indexPath.row])
             cellTextSelect.selectTextField.addTarget(self, action: #selector(selectBankNameButtonClicked(_:)), for: .editingDidBegin)
             
             cellTextSelect.selectTextField.layer.cornerRadius = 5.0
@@ -945,14 +958,17 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
                 cellMobNum.paymentImgView.af_setImage(withURL: imgURL)
             }
             
+            //cellMobNum.mobileNumberTxtField.placeholder = (self.arrDictKeys[indexPath.row])
+            if (arrData?.count ?? 0) > 2 {
+                cellMobNum.mobileNumberTxtField.placeholder = arrData?[2] as? String ?? ""
+            }
+            
             
             cellMobNum.mobileNumberTxtField.layer.cornerRadius = 5.0
             cellMobNum.mobileNumberTxtField.layer.borderWidth = 1.0
             cellMobNum.mobileNumberTxtField.layer.borderColor = #colorLiteral(red: 0.1254901961, green: 0.2509803922, blue: 0.6039215686, alpha: 1)
             cellMobNum.seperatorLbl.backgroundColor = .clear
             
-            
-            cellMobNum.mobileNumberTxtField.placeholder = (self.arrDictKeys[indexPath.row])
             cellMobNum.mobileNumberTxtField.tag = indexPath.row
             cellMobNum.mobileNumberTxtField.delegate = self
             
@@ -1003,7 +1019,20 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         existingFileDropDown.bottomOffset = CGPoint(x: 0, y: 0)
         
         // You can also use localizationKeysDataSource instead. Check the docs.
-        let typeOfFileArray = self.arrDrop
+        //let typeOfFileArray = self.arrDrop
+        
+        let data = self.arrDictValues[sender.tag]
+        let arrData = data[0] as? Array<Any>
+        
+        //let drop = UIDropDown()
+        var arrDrop = [String]()
+        let arr = (arrData)?[3] as? [String]
+        arrDrop = arr ?? []
+        //drop.options = arrDrop
+        
+        // You can also use localizationKeysDataSource instead. Check the docs.
+        //let typeOfFileArray = self.arrDrop
+        let typeOfFileArray = arrDrop
         existingFileDropDown.dataSource = typeOfFileArray
         
         // Action triggered on selection

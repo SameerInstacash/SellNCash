@@ -865,7 +865,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     let customerId = UserDefaults.standard.string(forKey: "customer_id") ?? ""
                     let postString = "customerId=\(customerId)&orderId=\(self.orderId)&photo=\(strBase64)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf"
                     
-                    //print("url is :",request,"\nParam is :",postString)
+                    print("idProof url is :",request,"\nParam is :",postString)
                     
                     //SwiftSpinner.show("")
                     self.hud.textLabel.text = ""
