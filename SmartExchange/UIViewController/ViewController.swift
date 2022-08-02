@@ -37,6 +37,7 @@ extension UIViewController {
 public extension UIDevice {
     
     var moName: String {
+        
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -50,6 +51,10 @@ public extension UIDevice {
         case "iPod5,1":                                 return "iPod touch (5th generation)"
         case "iPod7,1":                                 return "iPod touch (6th generation)"
         case "iPod9,1":                                 return "iPod touch (7th generation)"
+            
+        case "iPhone1,1":                               return "iPhone"
+        case "iPhone1,2":                               return "iPhone 3G"
+        case "iPhone2,1":                               return "iPhone 3GS"
             
         case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
         case "iPhone4,1":                               return "iPhone 4s"
@@ -69,10 +74,12 @@ public extension UIDevice {
         case "iPhone11,2":                              return "iPhone XS"
         case "iPhone11,4", "iPhone11,6":                return "iPhone XS Max"
         case "iPhone11,8":                              return "iPhone XR"
+            
         case "iPhone12,1":                              return "iPhone 11"
         case "iPhone12,3":                              return "iPhone 11 Pro"
         case "iPhone12,5":                              return "iPhone 11 Pro Max"
         case "iPhone12,8":                              return "iPhone SE (2nd generation)"
+            
         case "iPhone13,1":                              return "iPhone 12 mini"
         case "iPhone13,2":                              return "iPhone 12"
         case "iPhone13,3":                              return "iPhone 12 Pro"
@@ -82,8 +89,9 @@ public extension UIDevice {
         case "iPhone14,5":                              return "iPhone 13"
         case "iPhone14,2":                              return "iPhone 13 Pro"
         case "iPhone14,3":                              return "iPhone 13 Pro Max"
-            
-            
+        case "iPhone14,6":                              return "iPhone SE 3rd Gen"
+             
+                        
         //iPad
         case "iPad1,1", "iPad1,2":                      return "iPad (1st generation)"
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad (2nd generation)"
@@ -123,7 +131,7 @@ public extension UIDevice {
         case "AppleTV6,2":                              return "Apple TV 4K"
         case "AudioAccessory1,1":                       return "HomePod"
         case "AudioAccessory5,1":                       return "HomePod mini"
-        case "i386", "x86_64":                          return "iPhone 13 Pro"
+        case "i386", "x86_64":                          return identifier
         default:                                        return identifier
         
         }
@@ -174,9 +182,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
     
     var IMEINumber = String()
     @IBOutlet weak var storeImage: UIImageView!
-    @IBOutlet weak var storeName: UILabel!
     @IBOutlet weak var imeiLabel: UILabel!
-    @IBOutlet weak var findStoreBtn: UIButton!
     @IBOutlet weak var scanQRBtn: UIButton!
     @IBOutlet weak var previousBtn: UIButton!
     //@IBOutlet weak var smartExLoadingImage: UIImageView!
@@ -189,7 +195,8 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
     var appCodes: String = ""
     
     
-    var endPoint = "https://exchange.getinstacash.in/stores-asia/api/v1/public/"
+    //var endPoint = "https://exchange.getinstacash.in/stores-asia/api/v1/public/"
+    var endPoint = ""
     var storeToken: String = ""
     
     var hasScanned = true
@@ -325,166 +332,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         
         return
         
-        /*
-        self.storeToken = String(storeTokenEdit.text ?? "0")
-        switch(self.storeToken.prefix(4)) {
-        case "9100"  :
-            self.endPoint = "https://exchange.getinstacash.com/store/api/v1/public/"
-            break;
-        case "6000"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6300"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9000"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6001"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6002"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6301"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6302"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6003"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6004"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6303"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6304"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6005"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9001"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6305"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6305"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6006"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6007"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9002"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9003"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6306"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6307"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6008"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6009"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/asurionre/api/v1/public/"
-            break;
-        case "6010"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6011"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9004"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9005"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9006"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6308"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6309"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6310"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6311"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6312"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6313"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6314"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9007"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9008"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9009"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9010"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "8515"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6016"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6017"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6018"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6019"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6020"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6315"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "8516"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "6501"  :
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        case "9102"  :
-            self.endPoint = "https://exchange.getinstacash.com/blynk/api/v1/public/"
-            break;
-            /* you can have any number of case statements */
-        default : /* Optional */
-            self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-            break;
-        }
-        self.verifyUserSmartCode()
-        */
+        
         
         
         self.storeToken = String(storeTokenEdit.text ?? "0")
@@ -635,166 +483,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         self.appCodes = ""
                     }
                     
-                    /*
-                    switch(self.storeToken.prefix(4)) {
-                    case "9100"  :
-                        self.endPoint = "https://exchange.getinstacash.com/store/api/v1/public/"
-                        break;
-                    case "6000"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6300"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9000"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6001"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6002"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6301"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6302"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6003"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6004"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6303"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6304"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6005"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9001"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6305"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6305"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6006"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6007"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9002"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9003"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6306"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6307"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6008"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6009"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6010"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6011"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9004"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9005"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9006"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6308"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6309"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6310"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6311"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6312"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6313"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6314"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9007"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9008"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9009"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9010"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "8515"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6016"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6017"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6018"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6019"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6020"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6315"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "8516"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "6501"  :
-                        self.endPoint = "https://exchange.getinstacash.com.my/stores-asia/api/v1/public/"
-                        break;
-                    case "9102"  :
-                        self.endPoint = "https://exchange.buyblynk.com/api/v1/public/"
-                        break;
-                        
-                        /* you can have any number of case statements */
-                    default : /* Optional */
-                        self.endPoint = "https://exchange.buyblynk.com/api/v1/public/"
-                        break;
-                    }
-                    self.verifyUserSmartCode()
-                    */
+                    
                     
                     if self.storeToken.count >= 4 {
                         print("self.storeToken", self.storeToken)
@@ -994,14 +683,9 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         
     }
     
-    
-//    @IBAction func retryBtnPressed(_ sender: Any?) {
-//        verifyUserSmartCode()
-//    }
-    
     func verifyUserSmartCode() {
         let device = UIDevice.current.moName
-//        retryBtn.isHidden = true
+        //retryBtn.isHidden = true
         
         //smartExLoadingImage.isHidden = false
         //smartExLoadingImage.rotate360Degrees()
@@ -1011,19 +695,20 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
         self.hud.show(in: self.view)
         
         
-        var request = URLRequest(url: URL(string: "\(self.endPoint)/startSession")!)
+        //var request = URLRequest(url: URL(string: "\(self.endPoint)/startSession")!)
+        var request = URLRequest(url: URL(string: "\(AppBaseUrl)/startSession")!)
         let preferences = UserDefaults.standard
-        preferences.set(self.endPoint, forKey: "endpoint")
+        //preferences.set(self.endPoint, forKey: "endpoint")
+        preferences.set(AppBaseUrl, forKey: "endpoint")
         request.httpMethod = "POST"
-        //        let mName = UIDevice.current.modelName
+        //let mName = UIDevice.current.modelName
         let modelCapacity = getTotalSize()
-        //        let model =  "\(mName)"
+        //let model =  "\(mName)"
         let IMEI = imeiLabel.text
         let ram =  ProcessInfo.processInfo.physicalMemory
         //let ram = 3221223823
+        
         let postString = "IMEINumber=\(IMEI!)&device=\(device)&memory=\(modelCapacity)&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=\(ram)&storeToken=\(self.storeToken)"
-//        let postString = "IMEINumber=\(IMEI!)&device=iPhone XR&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=2919613952&storeToken=6017"
-//                let postString = "IMEINumber=\(IMEI!)&device=a0001&memory=64&userName=planetm&apiKey=fd9a42ed13c8b8a27b5ead10d054caaf&ram=1919613952&storeToken=6016"
         
         print("url is :",request,"\nParam is :",postString)
         
@@ -1053,6 +738,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                     let preferences = UserDefaults.standard
                     var productIdenti = "0"
                     let productData = json["productData"]
+                    
                     if productData["id"].string ?? "" != "" {
                     
                         productIdenti = productData["id"].string ?? ""

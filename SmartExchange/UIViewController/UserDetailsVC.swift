@@ -29,7 +29,7 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
     var resultJOSN = JSON()
     let hud = JGProgressHUD()
     
-    var endPoint = AppBaseUrl // Live
+    var endPoint = AppBaseUrl
 
     //var drop = UIDropDown()
     //var arrDrop = [String]()
@@ -175,7 +175,10 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         if let cell = self.userDetailTableView.cellForRow(at: ndx) as? TextBoxCell {
             
             if cell.txtField.text?.isEmpty ?? false {
-                self.bankDict[cell.txtField.placeholder ?? ""] = ""
+                //self.bankDict[cell.txtField.placeholder ?? ""] = ""
+                
+                self.bankDict[self.placeHold] = ""
+                
             }else {
                 self.bankDict[self.placeHold] = cell.txtField.text ?? ""
             }
@@ -209,7 +212,9 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         
         if let cell = self.userDetailTableView.cellForRow(at: ndx) as? SelectTextCell {
             if cell.selectTextField.text?.isEmpty ?? false {
-                self.bankDict[cell.selectTextField.placeholder ?? ""] = ""
+                //self.bankDict[cell.selectTextField.placeholder ?? ""] = ""
+                
+                self.bankDict[self.placeHold] = ""
             }else {
                 self.bankDict[self.placeHold] = cell.selectTextField.text ?? ""
             }
@@ -217,7 +222,9 @@ class UserDetailsVC: UIViewController, UITextFieldDelegate, UITableViewDataSourc
         
         if let cell = self.userDetailTableView.cellForRow(at: ndx) as? MobileNumberCell {
             if cell.mobileNumberTxtField.text?.isEmpty ?? false {
-                self.bankDict[cell.mobileNumberTxtField.placeholder ?? ""] = ""
+                //self.bankDict[cell.mobileNumberTxtField.placeholder ?? ""] = ""
+                
+                self.bankDict[self.placeHold] = ""
             }else {
                 self.bankDict[self.placeHold] = cell.mobileNumberTxtField.text ?? ""
             }
