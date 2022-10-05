@@ -110,6 +110,14 @@ class VolumeRockerVC: UIViewController {
         
         // SAM comment on 18/4/22
         //self.audioSession.removeObserver(self, forKeyPath: "outputVolume", context: nil)
+        
+        /*
+        if let observerAdded = self.audioSession?.observationInfo {
+            self.audioSession?.removeObserver(self, forKeyPath: "outputVolume", context: nil)
+            print("now added outputVolume observer remove", observerAdded)
+        }
+        */
+        
     }
     
     var volDown = false

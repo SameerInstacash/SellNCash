@@ -149,7 +149,7 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.combineAllAppCodeForServerSend()
         
-        let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as! Bool
+        let isTradeInOnline = UserDefaults.standard.value(forKey: "Trade_In_Online") as? Bool ?? false
         print("isTradeInOnline value is :", isTradeInOnline)
         
         if isTradeInOnline {
@@ -982,6 +982,10 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
         }else {
             
+            hardwareQuestionsCount = 0
+            AppQuestionIndex = -1
+            AppResultString = ""
+            
             // Navigate to home page
             let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
             let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -1219,29 +1223,29 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             appCodestring = "\(appCodestring);CISS15"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "volume")){
+        if (!UserDefaults.standard.bool(forKey: "volume")){
             appCodestring = "\(appCodestring);CISS02;CISS03"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "earphone")){
+        if (!UserDefaults.standard.bool(forKey: "earphone")){
             appCodestring = "\(appCodestring);CISS11"
             print("Earphone kharaab hai")
         }else {
             print("Earphone sahi hai")
         }
         
-        if(!UserDefaults.standard.bool(forKey: "charger")){
+        if (!UserDefaults.standard.bool(forKey: "charger")){
             appCodestring = "\(appCodestring);CISS05"
             print("Charger kharaab hai")
         }else {
             print("Charger sahi hai")
         }
         
-        if(!UserDefaults.standard.bool(forKey: "camera")){
+        if (!UserDefaults.standard.bool(forKey: "camera")){
             appCodestring = "\(appCodestring);CISS01"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "fingerprint")){
+        if (!UserDefaults.standard.bool(forKey: "fingerprint")){
             appCodestring = "\(appCodestring);CISS12"
         }
         
@@ -1249,15 +1253,15 @@ class PriceViewController: UIViewController, UITableViewDelegate, UITableViewDat
             appCodestring = "\(appCodestring);CISS04"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "GSM")) {
+        if (!UserDefaults.standard.bool(forKey: "GSM")) {
             appCodestring = "\(appCodestring);CISS10"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "mic")){
+        if (!UserDefaults.standard.bool(forKey: "mic")){
             appCodestring = "\(appCodestring);CISS08"
         }
         
-        if(!UserDefaults.standard.bool(forKey: "Speakers")){
+        if (!UserDefaults.standard.bool(forKey: "Speakers")){
             appCodestring = "\(appCodestring);CISS07"
         }
         
