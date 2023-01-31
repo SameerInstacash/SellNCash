@@ -2,12 +2,13 @@ uploading map to new relic
 executing upload_map_file_to_new_relic
 New Relic: map file upload attempt #1 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
-/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/August-22/2:8:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
+/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/January-23/31:1:23/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
 New Relic: map file upload attempt #2 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
-/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/August-22/2:8:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
+/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/January-23/31:1:23/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
 New Relic: map file upload attempt #3 (of 3)
 Using URL: https://mobile-symbol-upload.eu01.nr-data.net
-/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/August-22/2:8:22/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
+/Users/sameerkhan/Desktop/InstaCash Projects/XtraCover/January-23/31:1:23/SmartExchange-iOS-SellNCash/Pods/NewRelicAgent/NewRelic.xcframework/Resources/newrelic_postbuild.sh: line 83: python: command not found
 executing upload_dsym_to_new_relic
+new relic: error "100" while uploading "/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-azwjollfqpjvxqdyyghliywvvfsy/Build/Intermediates.noindex/SmartExchange.build/Debug-iphoneos/SmartExchange.build/NewRelic.framework.dSYM-1675166231.zip" to "/Users/sameerkhan/Library/Developer/Xcode/DerivedData/SmartExchange-azwjollfqpjvxqdyyghliywvvfsy/Build/Intermediates.noindex/SmartExchange.build/Debug-iphoneos/SmartExchange.build/NewRelic.framework.dSYM-1675166231.zip"
 new relic: successfully uploaded dsym files

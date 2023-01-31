@@ -49,7 +49,10 @@ class StoreUrlData: NSObject {
         ref.observeSingleEvent(of: .value, with: { snapshot in
             
             if !snapshot.exists() {
+                
+                //MARK: 31/1/23 Ajay told to handle this
                 completion([])
+                print("Firebase DB limit Reached 1 !!")
                 return
             }
             
@@ -69,7 +72,12 @@ class StoreUrlData: NSObject {
                 completion(storeList)
             }
             
-        })
+        }){ (error) in
+            
+            //MARK: 31/1/23 Ajay told to handle this
+            completion([])
+            print("Firebase DB limit Reached 2 !!")
+        }
         
     }
     

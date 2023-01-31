@@ -112,7 +112,7 @@ public extension UIDevice {
         case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air (1st generation)"
         case "iPad5,3", "iPad5,4":                      return "iPad Air (2nd generation)"
         case "iPad11,3", "iPad11,4":                    return "iPad Air (3rd generation)"
-        case "iPad13,1", "iPad13,2":                    return "iPad Air (4th generation)"
+        //case "iPad13,1", "iPad13,2":                    return "iPad Air (4th generation)"
             
         //iPad Mini
         case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad mini (1st generation)"
@@ -131,6 +131,25 @@ public extension UIDevice {
         case "iPad7,1", "iPad7,2":                      return "iPad Pro (12.9-inch) (2nd generation)"
         case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8":return "iPad Pro (12.9-inch) (3rd generation)"
         case "iPad8,11", "iPad8,12":                    return "iPad Pro (12.9-inch) (4th generation)"
+            
+            
+            //New iPads add on 6/10/22
+            case "iPad12,1":                    return "iPad 9th Gen (WiFi)"
+            case "iPad12,2":                    return "iPad 9th Gen (WiFi+Cellular)"
+            case "iPad14,1":                    return "iPad mini 6th Gen (WiFi)"
+            case "iPad14,2":                    return "iPad mini 6th Gen (WiFi+Cellular)"
+            case "iPad13,1":                    return "iPad Air 4th Gen (WiFi)"
+            case "iPad13,2":                    return "iPad Air 4th Gen (WiFi+Cellular)"
+            case "iPad13,4":                    return "iPad Pro 11 inch 5th Gen"
+            case "iPad13,5":                    return "iPad Pro 11 inch 5th Gen"
+            case "iPad13,6":                    return "iPad Pro 11 inch 5th Gen"
+            case "iPad13,7":                    return "iPad Pro 11 inch 5th Gen"
+            case "iPad13,8":                    return "iPad Pro 12.9 inch 5th Gen"
+            case "iPad13,9":                    return "iPad Pro 12.9 inch 5th Gen"
+            case "iPad13,10":                    return "iPad Pro 12.9 inch 5th Gen"
+            case "iPad13,11":                    return "iPad Pro 12.9 inch 5th Gen"
+            case "iPad13,16":                    return "iPad Air 5th Gen (WiFi)"
+            case "iPad13,17":                    return "iPad Air 5th Gen (WiFi+Cellular)"
             
         
         case "AppleTV5,3":                              return "Apple TV"
@@ -273,6 +292,12 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                     self.arrStoreUrlData = storeData
                     
                 }else {
+                    
+                    //MARK: 31/1/23 Ajay told to handle this
+                    
+                    self.arrStoreUrlData = []
+                    print("No Data Found")
+                    
                     //DispatchQueue.main.async() {
                         //self.view.makeToast("No Data Found".localized, duration: 2.0, position: .bottom)
                     //}
@@ -601,7 +626,7 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                     print(responseObject?["msg"] as? String ?? "")
                     
                     let values = (responseObject?["msg"] as? String ?? "").components(separatedBy: "@@@")
-                   print(values)
+                    print(values)
                     
                     if values.count > 2 {
                         self.storeToken = String(values[0])
@@ -619,25 +644,53 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         
                         let enteredToken = self.storeToken.prefix(4)
                         
-                        for tokens in self.arrStoreUrlData {
-                            if tokens.strPrefixKey == enteredToken {
-                                
-                                self.endPoint = tokens.strUrl
-                                print("self.endPoint", self.endPoint)
-                                
-                                let preferences = UserDefaults.standard
-                                preferences.setValue(tokens.strTnc, forKey: "tncendpoint")
-                                preferences.setValue(tokens.strType, forKey: "storeType")
-                                preferences.setValue(tokens.strIsTradeOnline, forKey: "tradeOnline")
-                                
-                                self.verifyUserSmartCode()
-                                
-                                UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
-                                
-                                //break
-                                return
+                        if self.arrStoreUrlData.count > 0 {
+                            
+                            for tokens in self.arrStoreUrlData {
+                                if tokens.strPrefixKey == enteredToken {
+                                    
+                                    self.endPoint = tokens.strUrl
+                                    print("self.endPoint", self.endPoint)
+                                    
+                                    let preferences = UserDefaults.standard
+                                    preferences.setValue(tokens.strTnc, forKey: "tncendpoint")
+                                    preferences.setValue(tokens.strType, forKey: "storeType")
+                                    preferences.setValue(tokens.strIsTradeOnline, forKey: "tradeOnline")
+                                    
+                                    self.verifyUserSmartCode()
+                                    
+                                    UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
+                                    
+                                    //break
+                                    return
+                                }
                             }
+                            
+                        }else {
+                            
+                            //for tokens in self.arrStoreUrlData {
+                                //if tokens.strPrefixKey == enteredToken {
+                                    
+                                    self.endPoint = AppBaseUrl
+                                    print("self.endPoint", self.endPoint)
+                                    
+                                    let preferences = UserDefaults.standard
+                                    preferences.setValue(AppBaseTnc, forKey: "tncendpoint")
+                                    preferences.setValue(0, forKey: "storeType")
+                                    preferences.setValue(0, forKey: "tradeOnline")
+                                    
+                                    self.verifyUserSmartCode()
+                                    
+                                    UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
+                                    
+                                    //break
+                                    return
+                                //}
+                            //}
+                            
                         }
+                        
+
                         
                         // If Store Token not add in firebase
                         //self.endPoint = "https://exchange.buyblynk.com/api/v1/public" // Blynk

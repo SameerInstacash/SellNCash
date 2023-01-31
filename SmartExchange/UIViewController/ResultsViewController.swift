@@ -613,153 +613,160 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if self.arrFailedAndSkipedTest.count > 0 {
+            
             if indexPath.section == 0 {
                 
-                if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Dead Pixels" {
+                if indexPath.row == 0 {
                     
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
+                }else {
                     
-                    /*
-                    let vc  = DeadPixelVC()
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    */
-                    
-                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Screen" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ScreenVC") as! ScreenViewController
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Rotation" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "RotationVC") as! AutoRotationVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Proximity" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ProximityView") as! ProximityVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Hardware Buttons" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "VRVC") as! VolumeRockerVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                   
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Earphone" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "EarphoneVC") as! EarphoneJackVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                  
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Charger" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChargerVC") as! DeviceChargerVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Camera" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                   
-                }
-                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Fingerprint Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Face-Id Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Biometric Authentication" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "FingerPrintVC") as! FingerprintViewController
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Bluetooth" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GPS" ||  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GSM" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "SMS Verification" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "NFC" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Battery" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Storage" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "InternalVC") as! InternalTestsVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                   
-                }
-                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "WIFI" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "WiFiTestVC") as! WiFiTestVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }
-                else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Microphone" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MicrophoneVC") as! MicrophoneVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                    
-                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Speaker" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "SpeakerVC") as! SpeakerVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                   
-                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Vibrator" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "VibratorVC") as! VibratorVC
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
-                  
-                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Torch" {
-                    
-                    //let vc  = TorchVC()
-                    //vc.isComingFromTestResult = true
-                    //vc.resultJSON = self.resultJSON
-                    //vc.modalPresentationStyle = .fullScreen
-                    //self.present(vc, animated: true, completion: nil)
-                
-                }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Autofocus" {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
-                    vc.isComingFromTestResult = true
-                    vc.resultJSON = self.resultJSON
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
+                    if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Dead Pixels" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeadPixelVC") as! DeadPixelVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                        /*
+                         let vc  = DeadPixelVC()
+                         vc.isComingFromTestResult = true
+                         vc.resultJSON = self.resultJSON
+                         vc.modalPresentationStyle = .fullScreen
+                         self.present(vc, animated: true, completion: nil)
+                         */
+                        
+                    }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Screen" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ScreenVC") as! ScreenViewController
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Rotation" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "RotationVC") as! AutoRotationVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Proximity" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ProximityView") as! ProximityVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Hardware Buttons" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VRVC") as! VolumeRockerVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Earphone" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "EarphoneVC") as! EarphoneJackVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Charger" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChargerVC") as! DeviceChargerVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if  self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Camera" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Fingerprint Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Face-Id Scanner" || self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Biometric Authentication" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FingerPrintVC") as! FingerprintViewController
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Bluetooth" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GPS" ||  arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "GSM" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "SMS Verification" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "NFC" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Battery" || arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Storage" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "InternalVC") as! InternalTestsVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "WIFI" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "WiFiTestVC") as! WiFiTestVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Microphone" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MicrophoneVC") as! MicrophoneVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Speaker" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SpeakerVC") as! SpeakerVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Vibrator" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VibratorVC") as! VibratorVC
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Torch" {
+                        
+                        //let vc  = TorchVC()
+                        //vc.isComingFromTestResult = true
+                        //vc.resultJSON = self.resultJSON
+                        //vc.modalPresentationStyle = .fullScreen
+                        //self.present(vc, animated: true, completion: nil)
+                        
+                    }else if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Autofocus" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CameraVC") as! CameraViewController
+                        vc.isComingFromTestResult = true
+                        vc.resultJSON = self.resultJSON
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated: true, completion: nil)
+                        
+                    }
                     
                 }
                 
