@@ -95,7 +95,9 @@ class VolumeRockerVC: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
         // Dispose of any resources that can be recreated.
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -103,6 +105,7 @@ class VolumeRockerVC: UIViewController {
         
         // SAM comment on 18/4/22
         //self.listenVolumeButton()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -340,6 +340,8 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
             model.priority = 0
             model.strTestType = "Vibrator"
             arrFunctionalTest.append(model)
+            
+            self.resultJSON["Vibrator"].int = 1
         }
         
         /*

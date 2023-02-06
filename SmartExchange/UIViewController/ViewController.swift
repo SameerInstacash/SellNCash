@@ -17,12 +17,15 @@ import JGProgressHUD
 import FirebaseDatabase
 
 extension String {
+    
     var localized: String {
         return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
     }
+    
 }
 
 extension UIViewController {
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -32,6 +35,7 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
 }
 
 public extension UIDevice {
@@ -630,17 +634,22 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                     print(values)
                     
                     if values.count > 2 {
+                        
                         self.storeToken = String(values[0])
                         self.productId = values[1]
                         self.appCodes = values[2]
+                        
                     }else{
+                        
                         self.storeToken = String(values[0])
                         self.productId = ""
                         self.appCodes = ""
+                        
                     }
                     
                     
                     if self.storeToken.count >= 4 {
+                        
                         print("self.storeToken", self.storeToken)
                         
                         let enteredToken = self.storeToken.prefix(4)
@@ -706,7 +715,6 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         
                         preferences.setValue(AppBaseTnc, forKey: "tncendpoint") 
                         
-                         
                         
                         preferences.setValue(0, forKey: "storeType")
                         preferences.setValue(0, forKey: "tradeOnline")
@@ -716,9 +724,11 @@ class ViewController: UIViewController, QRCodeReaderViewControllerDelegate {
                         UserDefaults.standard.setValue(false, forKey: "Trade_In_Online")
                         
                     }else {
+                        
                         DispatchQueue.main.async() {
                             self.view.makeToast("Store Token Not Valid".localized, duration: 2.0, position: .bottom)
                         }
+                        
                     }
                 
                 }
