@@ -619,7 +619,7 @@ class ResultsViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if indexPath.section == 0 {
                 
                 if indexPath.row == 0 {
-                    
+                    return
                 }else {
                     
                     if self.arrFailedAndSkipedTest[indexPath.row - 1].strTestType == "Dead Pixels" {
